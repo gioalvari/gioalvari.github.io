@@ -240,3 +240,25 @@ footer p { margin: 0; }
   font-size: .88rem;
   color: var(--text-dim);
 }
+
+/* ── print ──────────────────────────────────────────── */
+@media print {
+  :root {
+    --bg:#fff; --bg-raised:#fff; --line:#ccc;
+    --text:#000; --text-dim:#444; --accent:#000; --accent-dim:#999;
+  }
+  header nav ul, .skip, footer { display: none; }
+  body { font-size: 11pt; }
+  .card, .repos a { break-inside: avoid; border-color: #ccc; }
+  a { text-decoration: none; }
+  .repos a[href]::after,
+  #contact a[href]::after { content: " (" attr(href) ")"; font-size: .75em; color: #555; }
+  section { padding-block: 1rem; }
+}
+
+/* ── reduce motion / small screens ──────────────────── */
+@media (max-width: 30rem) {
+  body { font-size: 16px; }
+  nav ul { gap: 1rem; font-size: .82rem; }
+  #story p:first-of-type::first-letter { font-size: 2.6rem; }
+}
