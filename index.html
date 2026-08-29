@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Giordano Alvari — Senior AI Engineer</title>
+<meta name="description" content="Senior AI Engineer. I build LLM agent systems that run in production, and forecasting systems people actually make decisions with. Florence, Italy.">
+<meta name="author" content="Giordano Alvari">
+
+<meta property="og:type" content="profile">
+<meta property="og:title" content="Giordano Alvari — Senior AI Engineer">
+<meta property="og:description" content="I build LLM agent systems that run in production, and forecasting systems people actually make decisions with.">
+<meta property="og:url" content="https://gioalvari.github.io/">
+<meta name="twitter:card" content="summary">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Giordano Alvari",
+  "url": "https://gioalvari.github.io/",
+  "email": "giordano.alvari@gmail.com",
+  "jobTitle": "Senior AI Engineer",
+  "worksFor": { "@type": "Organization", "name": "Enel" },
+  "address": { "@type": "PostalAddress", "addressLocality": "Florence", "addressCountry": "IT" },
+  "alumniOf": [
+    { "@type": "CollegeOrUniversity", "name": "University of Trento" },
+    { "@type": "Organization", "name": "DKFZ / EMBL Heidelberg" }
+  ],
+  "knowsLanguage": ["Italian", "English", "Spanish"],
+  "knowsAbout": [
+    "LLM agents", "Retrieval-Augmented Generation", "Machine Learning Engineering",
+    "Time series forecasting", "Conformal prediction", "MLOps", "Python"
+  ],
+  "sameAs": [
+    "https://www.linkedin.com/in/giordano-alvari-137b7b10a/",
+    "https://github.com/gioalvari",
+    "https://github.com/Dhonveli"
+  ]
+}
+</script>
+</head>
+
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="wrap">
+  <nav aria-label="Primary">
+    <span class="mark">GA</span>
+    <ul>
+      <li><a href="#work">Work</a></li>
+      <li><a href="#code">Code</a></li>
+      <li><a href="#story">Story</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main id="main">
+
+  <!-- ── HERO ───────────────────────────────────────── -->
+  <section class="wrap hero">
+    <p class="eyebrow">Senior AI Engineer · Florence, Italy</p>
+    <h1>I build LLM systems that survive<br>contact with production.</h1>
+    <p class="lead">
+      For six years I've worked on machine learning that has to hold up when someone is
+      relying on it at 3am — forecasting that executives plan against, and agents that touch
+      real operational systems. I care as much about <em>proving</em> a system works as about
+      building it.
+    </p>
+    <ul class="links">
+      <li><a href="mailto:giordano.alvari@gmail.com">giordano.alvari@gmail.com</a></li>
+      <li><a href="https://www.linkedin.com/in/giordano-alvari-137b7b10a/" rel="me">LinkedIn</a></li>
+      <li><a href="https://github.com/gioalvari" rel="me">GitHub</a></li>
+      <li><a href="giordano-alvari-cv.pdf">CV (PDF)</a></li>
+    </ul>
+  </section>
+
+  <!-- ── WORK ───────────────────────────────────────── -->
+  <section class="wrap" id="work">
+    <h2 class="section-title">What I've built</h2>
+    <p class="section-note">
+      Currently at Enel, one of the largest utilities in the world. Deliberately described
+      without internal system names.
+    </p>
+
+    <ol class="cards">
+
+      <li class="card">
+        <p class="kicker">Agentic AI · in production · Italy &amp; Spain</p>
+        <h3>Agents that do real operational work</h3>
+        <p>
+          I built, from scratch, an AI-based incident resolution programme for IT operations,
+          running today in two countries. The agents read the same procedures a human engineer
+          would follow, query the monitoring tools and network devices those procedures point to,
+          reason over what comes back, decide whether to keep going — and write their conclusions
+          into the ticketing platform where the work actually lives.
+        </p>
+        <p>
+          One deployment covers a control room handling roughly a thousand incidents and eight
+          thousand device diagnostics a month. I owned architecture and development decisions
+          end-to-end, and ran it with operations teams in Rome and Seville, in Italian, Spanish
+          and English.
+        </p>
+        <p class="aside">
+          The hard part was never the orchestration. It was earning the trust of engineers who
+          are accountable when something breaks — which is why nothing reaches production without
+          their sign-off.
+        </p>
+        <p class="stack">LangChain · LlamaIndex · AWS Bedrock · FastAPI · Kubernetes · pgvector</p>
+      </li>
+
+      <li class="card">
+        <p class="kicker">Incident automation at group scale</p>
+        <h3>Ninety percent of a multinational's IT incidents</h3>
+        <p>
+          I took ownership of the group's incident-automation platform and, by designing and
+          shipping new capability into it, grew its coverage to around 90% of the company's IT
+          incidents — with roughly 5% now closing end-to-end with no human involved at all.
+        </p>
+      </li>
+
+      <li class="card">
+        <p class="kicker">Forecasting · zero to production · team of 5</p>
+        <h3>Forecasting that executives plan against</h3>
+        <p>
+          A multi-year programme I led from nothing to production, under attention all the way up
+          to CEO level: hierarchical forecasting of customer churn and payment-default
+          disconnections as a function of price evolution — at aggregate level and down to
+          micro-clusters — with conformal prediction for calibrated uncertainty and scenario
+          simulation of how the customer base evolves.
+        </p>
+        <p>
+          I owned architecture and delivery, managed a team of five, and ran the relationship with
+          the business unit and executive stakeholders.
+        </p>
+        <p class="aside">
+          The point wasn't a better number. It was giving planners a calibrated interval instead
+          of a single confident-looking figure — which changed how the decisions were made.
+        </p>
+        <p class="stack">statsmodels · Nixtla · skforecast · conformal prediction · Spark · FastAPI</p>
+      </li>
+
+      <li class="card">
+        <p class="kicker">RAG · in production · serverless</p>
+        <h3>A document assistant you can trust with audit material</h3>
+        <p>
+          Internal audit documentation is exactly the kind of corpus where a helpful,
+          over-confident chatbot is worse than no chatbot. This one answers only from documents
+          the person asking is actually cleared to see, and cites its sources. Serverless on AWS,
+          shipped through a governed pipeline with security gating.
+        </p>
+      </li>
+
+      <li class="card">
+        <p class="kicker">Earlier · ML at scale</p>
+        <h3>Machine learning on eighteen million contracts</h3>
+        <p>
+          Before the LLM work: churn and claim prediction across 18M customer contracts on Spark,
+          cutting churn by 15%; customer segmentation and cross-selling models for electrification;
+          and real-time anomaly detection for battery energy storage systems, deployable on edge.
+        </p>
+        <p class="stack">PySpark · XGBoost · CatBoost · H2O · MLflow · Airflow</p>
+      </li>
+
+    </ol>
+  </section>
+
+  <!-- ── CODE ───────────────────────────────────────── -->
+  <section class="wrap" id="code">
+    <h2 class="section-title">Things I build on my own time</h2>
+    <p class="section-note">
+      Mostly to understand what happens underneath the abstractions I use at work.
+      Exploratory, not production software — that distinction matters to me.
+    </p>
+
+    <ul class="repos">
+      <li>
+        <a href="https://github.com/gioalvari/radixforge">
+          <h3>RadixForge <span class="lang">C++17</span></h3>
+          <p>
+            When ten agents share the same two-thousand-token system prompt, why compute it ten
+            times? A radix-tree KV-cache orchestrator that shares common prompt prefixes across
+            agents, built on native llama.cpp APIs.
+          </p>
+        </a>
+      </li>
+      <li>
+        <a href="https://github.com/gioalvari/agent-memory-layer">
+          <h3>Agent Memory Layer <span class="lang">C++17</span></h3>
+          <p>
+            A transparent OpenAI-compatible proxy that gives any agent persistent, searchable
+            memory across sessions. Local embeddings, SQLite vector storage, temporal-decay
+            retrieval. No code changes in the agent — just change the base URL.
+          </p>
+        </a>
+      </li>
+      <li>
+        <a href="https://github.com/gioalvari/global-forecasting">
+          <h3>global-forecasting <span class="lang">Python</span></h3>
+          <p>
+            Train a single model across many time series, with automatic lag generation,
+            time-series cross-validation and zero-shot forecasting.
+          </p>
+        </a>
+      </li>
+      <li>
+        <a href="https://github.com/Dhonveli/hybridforecast">
+          <h3>hybridforecast <span class="lang">Python</span></h3>
+          <p>
+            A library for testing hybrid forecasting models quickly: decompose a series, forecast
+            each component separately, recombine. Most of the work in hybrid forecasting is
+            plumbing — this removes it so you can compare approaches instead.
+          </p>
+        </a>
+      </li>
+      <li>
+        <a href="https://github.com/gioalvari/ats-checker">
+          <h3>ats-checker <span class="lang">Python</span></h3>
+          <p>
+            Scores a CV against a job description using local LLM embeddings and TF-IDF, then
+            suggests concrete edits. Built because I got tired of guessing what the filter wanted.
+          </p>
+        </a>
+      </li>
+    </ul>
+
+    <p class="footnote">
+      Older work — bioinformatics, Kaggle competitions, early forecasting experiments — lives on
+      my first account, <a href="https://github.com/Dhonveli">github.com/Dhonveli</a>.
+    </p>
+  </section>
+
+  <!-- ── STORY ──────────────────────────────────────── -->
+  <section class="wrap narrow" id="story">
+    <h2 class="section-title">How I got here</h2>
+
+    <p>
+      I started in biology, not software. My master's was in computational biology at the
+      University of Trento, and I spent a year at DKFZ and EMBL in Heidelberg working on
+      single-cell eQTL mapping — trying to find which genetic variants change gene expression,
+      in data where almost every signal is noise wearing a convincing costume. That work became
+      a paper in <a href="https://doi.org/10.1186/s13059-021-02407-x"><em>Genome Biology</em></a>;
+      the <a href="https://github.com/Dhonveli/eQTLlimix_container">containerised pipeline</a>
+      is still on my old GitHub account.
+    </p>
+
+    <p>
+      I don't think of that as a previous life. It's where the part of my work I value most comes
+      from. In biology you learn very quickly that a result which looks good is not the same as a
+      result which is true, and that the difference is entirely a matter of how carefully you set
+      up the test. That instinct turns out to be the scarcest thing in applied AI right now —
+      everyone can get a demo working; far fewer can tell you whether it actually works.
+    </p>
+
+    <p>
+      Then I moved into industry. Six years at Enel: first machine learning at scale on customer
+      data, then a forecasting programme I grew from an idea into a production system with a team
+      behind it, and now agentic systems doing operational work in two countries. The
+      through-line is that I've always preferred problems where being wrong has consequences.
+    </p>
+
+    <p>
+      I'm drawn to energy, pharma and bio, and to organisations doing something worth doing.
+      I live in Florence and work in Italian, English and Spanish.
+    </p>
+  </section>
+
+  <!-- ── CONTACT ────────────────────────────────────── -->
+  <section class="wrap narrow" id="contact">
+    <h2 class="section-title">Get in touch</h2>
+    <p>
+      I'm open to conversations about Senior, Lead or Staff AI Engineering roles — remote from
+      Italy, hybrid in Florence, or a move abroad for the right thing.
+    </p>
+    <p class="big-links">
+      <a href="mailto:giordano.alvari@gmail.com">giordano.alvari@gmail.com</a><br>
+      <a href="https://www.linkedin.com/in/giordano-alvari-137b7b10a/">linkedin.com/in/giordanoalvari</a><br>
+      <a href="https://github.com/gioalvari">github.com/gioalvari</a><br>
+      <a href="giordano-alvari-cv.pdf">CV — PDF, one page</a>
+    </p>
+  </section>
+
+</main>
+
+<footer class="wrap">
+  <p>© <span id="year">2026</span> Giordano Alvari · Built by hand, no framework.</p>
+</footer>
+
+<script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+
+</body>
+</html>
