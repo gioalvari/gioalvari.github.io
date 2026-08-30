@@ -114,6 +114,24 @@ h1 {
   font-size: .93rem;
 }
 
+.proof { padding-block: 0 clamp(2.5rem, 6vw, 4.5rem); }
+.proof dl {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  margin: 0;
+  border-block: 1px solid var(--line);
+}
+.proof dl div { padding: 1.4rem 1.25rem; border-right: 1px solid var(--line); }
+.proof dl div:last-child { border-right: 0; }
+.proof dt {
+  font-family: var(--serif);
+  font-size: clamp(1.65rem, 4vw, 2.35rem);
+  font-weight: 600;
+  color: var(--accent);
+  line-height: 1;
+}
+.proof dd { margin: .55rem 0 0; color: var(--text-dim); font-size: .82rem; line-height: 1.45; }
+
 /* ── sections ───────────────────────────────────────── */
 section { padding-block: clamp(2.5rem, 6vw, 4.5rem); }
 
@@ -130,6 +148,16 @@ section { padding-block: clamp(2.5rem, 6vw, 4.5rem); }
   color: var(--text-dim); font-size: .95rem;
   margin: 0 0 2.75rem;
 }
+
+.expertise-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-top: 1.75rem;
+}
+.expertise-grid article { padding: 1.35rem 0; border-top: 2px solid var(--accent-dim); }
+.expertise-grid h3 { font-family: var(--serif); font-size: 1.2rem; margin: 0 0 .7rem; }
+.expertise-grid p:last-child { color: var(--text-dim); font-size: .9rem; margin: 0; }
 
 /* ── work cards ─────────────────────────────────────── */
 .cards { list-style: none; margin: 0; padding: 0; display: grid; gap: 1.25rem; }
@@ -259,6 +287,13 @@ footer p { margin: 0; }
 /* ── reduce motion / small screens ──────────────────── */
 @media (max-width: 30rem) {
   body { font-size: 16px; }
-  nav ul { gap: 1rem; font-size: .82rem; }
+  nav ul { gap: .7rem; font-size: .76rem; }
   #story p:first-of-type::first-letter { font-size: 2.6rem; }
+}
+
+@media (max-width: 44rem) {
+  .proof dl { grid-template-columns: repeat(2, 1fr); }
+  .proof dl div:nth-child(2) { border-right: 0; }
+  .proof dl div:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
+  .expertise-grid { grid-template-columns: 1fr; gap: .35rem; }
 }

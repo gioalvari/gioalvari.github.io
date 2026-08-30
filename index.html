@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Giordano Alvari — Senior AI Engineer</title>
-<meta name="description" content="Senior AI Engineer. I build LLM agent systems that run in production, and forecasting systems people actually make decisions with. Florence, Italy.">
+<title>Giordano Alvari — Senior AI / ML Engineer</title>
+<meta name="description" content="Senior AI and Machine Learning Engineer building production LLM agents, RAG platforms and forecasting systems. Based in Florence, available remotely across Europe.">
 <meta name="author" content="Giordano Alvari">
 <meta name="color-scheme" content="dark light">
 <meta name="theme-color" content="#0e1012" media="(prefers-color-scheme: dark)">
@@ -12,8 +12,8 @@
 <link rel="canonical" href="https://gioalvari.github.io/">
 
 <meta property="og:type" content="profile">
-<meta property="og:title" content="Giordano Alvari — Senior AI Engineer">
-<meta property="og:description" content="I build LLM agent systems that run in production, and forecasting systems people actually make decisions with.">
+<meta property="og:title" content="Giordano Alvari — Senior AI / ML Engineer">
+<meta property="og:description" content="Production LLM agents, RAG platforms and forecasting systems for high-stakes enterprise operations.">
 <meta property="og:url" content="https://gioalvari.github.io/">
 <meta property="og:image" content="https://gioalvari.github.io/og.png">
 <meta property="og:image:width" content="1200">
@@ -35,7 +35,7 @@
   "name": "Giordano Alvari",
   "url": "https://gioalvari.github.io/",
   "email": "giordano.alvari@gmail.com",
-  "jobTitle": "Senior AI Engineer",
+  "jobTitle": "Senior AI / Machine Learning Engineer",
   "worksFor": { "@type": "Organization", "name": "Enel" },
   "address": { "@type": "PostalAddress", "addressLocality": "Florence", "addressCountry": "IT" },
   "alumniOf": [
@@ -45,7 +45,7 @@
   "knowsLanguage": ["Italian", "English", "Spanish"],
   "knowsAbout": [
     "LLM agents", "Retrieval-Augmented Generation", "Machine Learning Engineering",
-    "Time series forecasting", "Conformal prediction", "MLOps", "Python"
+    "Time series forecasting", "Conformal prediction", "MLOps", "Python", "C++"
   ],
   "sameAs": [
     "https://www.linkedin.com/in/giordano-alvari-137b7b10a/",
@@ -64,6 +64,7 @@
   <nav aria-label="Primary">
     <span class="mark">GA</span>
     <ul>
+      <li><a href="#expertise">Expertise</a></li>
       <li><a href="#work">Work</a></li>
       <li><a href="#code">Code</a></li>
       <li><a href="#story">Story</a></li>
@@ -76,13 +77,13 @@
 
   <!-- ── HERO ───────────────────────────────────────── -->
   <section class="wrap hero">
-    <p class="eyebrow">Senior AI Engineer · Florence, Italy</p>
+    <p class="eyebrow">Senior AI / ML Engineer · Florence, Italy · Remote Europe</p>
     <h1>I build LLM systems that survive<br>contact with production.</h1>
     <p class="lead">
-      For six years I've worked on machine learning that has to hold up when someone is
-      relying on it at 3am — forecasting that executives plan against, and agents that touch
-      real operational systems. I care as much about <em>proving</em> a system works as about
-      building it.
+      For six years I've built machine learning that has to hold up when someone is relying on
+      it at 3am: forecasting that executives plan against and agents that touch real operational
+      systems. I lead work from problem framing and architecture through production delivery and
+      evaluation.
     </p>
     <ul class="links">
       <li><a href="mailto:giordano.alvari@gmail.com">giordano.alvari@gmail.com</a></li>
@@ -90,6 +91,36 @@
       <li><a href="https://github.com/gioalvari" rel="me">GitHub</a></li>
       <li><a href="giordano-alvari-cv.pdf">CV (PDF)</a></li>
     </ul>
+  </section>
+
+  <section class="wrap proof" aria-label="Career highlights">
+    <dl>
+      <div><dt>90%</dt><dd>of group IT incidents covered by a platform I own</dd></div>
+      <div><dt>18M</dt><dd>contracts modelled in production on Spark</dd></div>
+      <div><dt>€2.2M</dt><dd>annual savings from churn and claim prediction</dd></div>
+      <div><dt>5</dt><dd>people led on a zero-to-production forecasting programme</dd></div>
+    </dl>
+  </section>
+
+  <section class="wrap" id="expertise">
+    <h2 class="section-title">Where I add the most value</h2>
+    <div class="expertise-grid">
+      <article>
+        <p class="kicker">Production AI</p>
+        <h3>LLM agents and retrieval</h3>
+        <p>Tool-using agents, multi-agent orchestration, RAG, authorization-aware retrieval, Text2SQL and evaluation for operational workflows.</p>
+      </article>
+      <article>
+        <p class="kicker">Machine learning</p>
+        <h3>Forecasting and decision systems</h3>
+        <p>Hierarchical forecasting, calibrated uncertainty, scenario simulation, churn modelling and large-scale feature pipelines.</p>
+      </article>
+      <article>
+        <p class="kicker">Engineering leadership</p>
+        <h3>From ambiguity to production</h3>
+        <p>Architecture, hands-on delivery, team leadership, stakeholder alignment, governance and secure deployment on AWS and Kubernetes.</p>
+      </article>
+    </div>
   </section>
 
   <!-- ── WORK ───────────────────────────────────────── -->
@@ -173,7 +204,7 @@
         <h3>Machine learning on eighteen million contracts</h3>
         <p>
           Before the LLM work: churn and claim prediction across 18M customer contracts on Spark,
-          cutting churn by 15%; customer segmentation and cross-selling models for electrification;
+          cutting churn by 15% and saving €2.2M annually; customer segmentation and cross-selling models for electrification;
           and real-time anomaly detection for battery energy storage systems, deployable on edge.
         </p>
         <p class="stack">PySpark · XGBoost · CatBoost · H2O · MLflow · Airflow</p>
@@ -207,7 +238,8 @@
           <p>
             A transparent OpenAI-compatible proxy that gives any agent persistent, searchable
             memory across sessions. Local embeddings, SQLite vector storage, temporal-decay
-            retrieval. No code changes in the agent — just change the base URL.
+            retrieval. Includes 37 unit and integration tests, with batch embeddings benchmarked
+            at up to 11× throughput on Apple Silicon.
           </p>
         </a>
       </li>
@@ -286,12 +318,12 @@
   <section class="wrap narrow" id="contact">
     <h2 class="section-title">Get in touch</h2>
     <p>
-      I'm open to conversations about Senior, Lead or Staff AI Engineering roles — remote from
-      Italy, hybrid in Florence, or a move abroad for the right thing.
+      I'm open to Senior and Lead AI/ML Engineering roles, including research-oriented engineering
+      teams — remote across Europe or hybrid in Florence.
     </p>
     <p class="big-links">
       <a href="mailto:giordano.alvari@gmail.com">giordano.alvari@gmail.com</a><br>
-      <a href="https://www.linkedin.com/in/giordano-alvari-137b7b10a/">linkedin.com/in/giordanoalvari</a><br>
+      <a href="https://www.linkedin.com/in/giordano-alvari-137b7b10a/">linkedin.com/in/giordano-alvari-137b7b10a</a><br>
       <a href="https://github.com/gioalvari">github.com/gioalvari</a><br>
       <a href="giordano-alvari-cv.pdf">CV — PDF, one page</a>
     </p>
