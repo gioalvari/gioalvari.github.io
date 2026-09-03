@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">RadixForge shared prompt prefix architecture</title>
+  <desc id="desc">Three agent requests converge on one cached system prompt and branch into smaller agent-specific token deltas.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#11171a"/><stop offset="1" stop-color="#162b25"/></linearGradient>
+    <filter id="glow"><feGaussianBlur stdDeviation="7" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>
+  <rect width="1200" height="720" rx="28" fill="url(#bg)"/>
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, monospace">
+    <text x="70" y="72" fill="#77e1aa" font-size="20" letter-spacing="3">RADIXFORGE / C++20</text>
+    <text x="70" y="122" fill="#f0f7f3" font-family="Georgia, serif" font-size="36">Compute the common prompt once</text>
+  </g>
+  <g fill="#17201f" stroke="#41564f" stroke-width="2">
+    <rect x="90" y="190" width="220" height="76" rx="14"/><rect x="490" y="190" width="220" height="76" rx="14"/><rect x="890" y="190" width="220" height="76" rx="14"/>
+  </g>
+  <g fill="#d6e1dc" font-family="ui-monospace, monospace" font-size="18" text-anchor="middle">
+    <text x="200" y="236">AGENT A</text><text x="600" y="236">AGENT B</text><text x="1000" y="236">AGENT C</text>
+  </g>
+  <g fill="none" stroke="#77e1aa" stroke-width="3" stroke-opacity=".65">
+    <path d="M200 266V320H600M600 266V410M1000 266V320H600"/>
+  </g>
+  <circle cx="600" cy="410" r="102" fill="#77e1aa" opacity=".1" stroke="#77e1aa" stroke-width="3" filter="url(#glow)"/>
+  <text x="600" y="392" fill="#77e1aa" font-family="ui-monospace, monospace" font-size="16" text-anchor="middle">CACHED KV PREFIX</text>
+  <text x="600" y="432" fill="#f0f7f3" font-family="Georgia, serif" font-size="33" text-anchor="middle">2,000 tokens</text>
+  <g fill="none" stroke="#77e1aa" stroke-width="3" stroke-opacity=".65">
+    <path d="M530 484L350 570M600 512V600M670 484L850 570"/>
+  </g>
+  <g fill="#17201f" stroke="#41564f" stroke-width="2">
+    <rect x="235" y="560" width="230" height="80" rx="14"/><rect x="485" y="590" width="230" height="80" rx="14"/><rect x="735" y="560" width="230" height="80" rx="14"/>
+  </g>
+  <g font-family="ui-monospace, monospace" text-anchor="middle">
+    <text x="350" y="594" fill="#d6e1dc" font-size="16">A DELTA</text><text x="350" y="620" fill="#77e1aa" font-size="14">decode only</text>
+    <text x="600" y="624" fill="#d6e1dc" font-size="16">B DELTA</text><text x="600" y="650" fill="#77e1aa" font-size="14">decode only</text>
+    <text x="850" y="594" fill="#d6e1dc" font-size="16">C DELTA</text><text x="850" y="620" fill="#77e1aa" font-size="14">decode only</text>
+  </g>
+</svg>

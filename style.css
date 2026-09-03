@@ -1,6 +1,6 @@
 /* ─────────────────────────────────────────────────────────
    Giordano Alvari — personal site
-   No framework. Two files. That's the whole thing.
+   Static HTML and CSS. No framework or build step.
    ───────────────────────────────────────────────────────── */
 
 :root {
@@ -11,6 +11,10 @@
   --text-dim:  #8b939c;
   --accent:    #7fb2ff;
   --accent-dim:#38507a;
+  --teal:      #66d4c2;
+  --violet:    #a99dff;
+  --green:     #77e1aa;
+  --pink:      #f19dce;
 
   --serif: "Fraunces", Georgia, serif;
   --sans:  "Inter", system-ui, -apple-system, sans-serif;
@@ -134,6 +138,7 @@ h1 {
 
 /* ── sections ───────────────────────────────────────── */
 section { padding-block: clamp(2.5rem, 6vw, 4.5rem); }
+.anchor-alias { display: block; position: relative; top: -1rem; visibility: hidden; }
 
 .section-title {
   font-family: var(--serif); font-weight: 600;
@@ -148,6 +153,18 @@ section { padding-block: clamp(2.5rem, 6vw, 4.5rem); }
   color: var(--text-dim); font-size: .95rem;
   margin: 0 0 2.75rem;
 }
+
+.section-heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 2rem;
+  border-top: 1px solid var(--line);
+  padding-top: 1.75rem;
+}
+.section-heading .section-title { border: 0; padding: 0; margin-bottom: .6rem; }
+.section-heading .kicker { margin-bottom: .45rem; }
+.section-link { flex: 0 0 auto; font-family: var(--mono); font-size: .78rem; margin-bottom: .7rem; }
 
 .expertise-grid {
   display: grid;
@@ -201,38 +218,68 @@ section { padding-block: clamp(2.5rem, 6vw, 4.5rem); }
   word-spacing: .1em;
 }
 
-/* ── repos ──────────────────────────────────────────── */
-.repos {
-  list-style: none; margin: 0; padding: 0;
-  display: grid; gap: 1rem;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 21rem), 1fr));
+/* ── projects ───────────────────────────────────────── */
+.project-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.25rem; }
+.project {
+  min-width: 0;
+  overflow: hidden;
+  background: var(--bg-raised);
+  border: 1px solid var(--line);
+  border-radius: 16px;
 }
-.repos a {
-  display: block; height: 100%;
-  padding: 1.5rem;
-  border: 1px solid var(--line); border-radius: 12px;
-  color: inherit; text-decoration: none;
-  transition: border-color .15s, transform .15s;
+.project-featured { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(19rem, .85fr); }
+.project-media {
+  position: relative;
+  display: block;
+  min-height: 100%;
+  overflow: hidden;
+  background: #101317;
 }
-.repos a:hover {
-  border-color: var(--accent);
-  transform: translateY(-2px);
+.project-media picture { display: block; width: 100%; height: 100%; }
+.project-media img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform .3s ease; }
+.project-featured .project-media img { object-fit: contain; }
+.project-media:hover img { transform: scale(1.015); }
+.project-copy { padding: clamp(1.25rem, 3.2vw, 2rem); }
+.project h3 {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: clamp(1.35rem, 2.7vw, 1.8rem);
+  letter-spacing: -.015em;
+  line-height: 1.2;
+  margin: .8rem 0 1rem;
 }
-@media (prefers-reduced-motion: reduce) { .repos a:hover { transform: none; } }
-
-.repos h3 {
-  font-family: var(--mono); font-size: 1rem; font-weight: 400;
-  margin: 0 0 .8rem;
-  display: flex; align-items: baseline; gap: .6rem; flex-wrap: wrap;
-  color: var(--accent);
-}
+.project h3 a { color: var(--text); text-decoration: none; }
+.project h3 a:hover { color: var(--accent); }
+.project-copy > p { margin: 0; color: var(--text-dim); font-size: .93rem; }
+.project-meta { display: flex; align-items: center; flex-wrap: wrap; gap: .45rem .8rem; color: var(--text-dim); font-family: var(--mono); font-size: .68rem; text-transform: uppercase; letter-spacing: .05em; }
 .lang {
   font-size: .68rem; letter-spacing: .06em; text-transform: uppercase;
   color: var(--text-dim);
   border: 1px solid var(--line); border-radius: 100px;
   padding: .12rem .55rem;
 }
-.repos p { margin: 0; font-size: .93rem; color: var(--text-dim); }
+.project-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: .75rem; margin: 1.5rem 0 0; padding-top: 1.25rem; border-top: 1px solid var(--line); }
+.project-stats div { min-width: 0; }
+.project-stats dt { color: var(--text); font-family: var(--serif); font-size: clamp(1.15rem, 2vw, 1.45rem); line-height: 1.1; }
+.project-stats dd { margin: .4rem 0 0; color: var(--text-dim); font-size: .68rem; line-height: 1.35; }
+.project-note { margin-top: 1.25rem !important; padding-left: .9rem; border-left: 2px solid var(--accent-dim); font-size: .78rem !important; }
+.project-gridcast { --project-color: var(--teal); }
+.project-bench { --project-color: var(--violet); }
+.project-radix { --project-color: var(--green); }
+.project-memory { --project-color: var(--pink); }
+.project:hover { border-color: color-mix(in srgb, var(--project-color) 55%, var(--line)); }
+.project-compact .project-media { aspect-ratio: 5 / 3; min-height: auto; }
+.project-compact .project-copy { padding-top: 1.35rem; }
+.project-compact h3 { font-size: 1.3rem; }
+.more-projects { display: grid; grid-template-columns: minmax(10rem, .55fr) 1.45fr; gap: 2rem; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--line); }
+.more-projects h3 { margin: 0; font-family: var(--serif); font-size: 1.1rem; }
+.more-projects ul { list-style: none; margin: 0; padding: 0; }
+.more-projects li + li { border-top: 1px solid var(--line); }
+.more-projects a { display: flex; justify-content: space-between; gap: 1.5rem; padding: .7rem 0; color: var(--text); text-decoration: none; }
+.more-projects a:hover span { color: var(--accent); }
+.more-projects span { font-family: var(--mono); font-size: .82rem; }
+.more-projects small { color: var(--text-dim); text-align: right; }
+@media (prefers-reduced-motion: reduce) { .project-media img { transition: none; } .project-media:hover img { transform: none; } }
 
 /* ── story ──────────────────────────────────────────── */
 #story p, #contact p { max-width: var(--measure); margin: 0 0 1.35rem; }
@@ -245,6 +292,14 @@ section { padding-block: clamp(2.5rem, 6vw, 4.5rem); }
 .big-links {
   font-family: var(--mono); font-size: .95rem; line-height: 2.1;
 }
+
+.not-found {
+  min-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.not-found h1 { font-size: clamp(2rem, 5vw, 3rem); }
 
 /* ── footer ─────────────────────────────────────────── */
 footer {
@@ -277,9 +332,9 @@ footer p { margin: 0; }
   }
   header nav ul, .skip, footer { display: none; }
   body { font-size: 11pt; }
-  .card, .repos a { break-inside: avoid; border-color: #ccc; }
+  .card, .project { break-inside: avoid; border-color: #ccc; }
   a { text-decoration: none; }
-  .repos a[href]::after,
+  .project h3 a[href]::after,
   #contact a[href]::after { content: " (" attr(href) ")"; font-size: .75em; color: #555; }
   section { padding-block: 1rem; }
 }
@@ -287,7 +342,8 @@ footer p { margin: 0; }
 /* ── reduce motion / small screens ──────────────────── */
 @media (max-width: 30rem) {
   body { font-size: 16px; }
-  nav ul { gap: .7rem; font-size: .76rem; }
+  nav { align-items: flex-start; }
+  nav ul { flex-wrap: wrap; justify-content: flex-end; gap: .35rem .7rem; font-size: .76rem; }
   #story p:first-of-type::first-letter { font-size: 2.6rem; }
 }
 
@@ -296,4 +352,19 @@ footer p { margin: 0; }
   .proof dl div:nth-child(2) { border-right: 0; }
   .proof dl div:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
   .expertise-grid { grid-template-columns: 1fr; gap: .35rem; }
+  .section-heading { align-items: start; }
+  .project-grid { grid-template-columns: 1fr; }
+  .project-featured { grid-column: auto; grid-template-columns: 1fr; }
+  .project-featured .project-media { aspect-ratio: 5 / 3; min-height: auto; }
+  .more-projects { grid-template-columns: 1fr; gap: .75rem; }
+}
+
+@media (max-width: 34rem) {
+  .section-heading { display: block; }
+  .section-link { display: inline-block; margin: .15rem 0 .4rem; }
+  .project-stats { grid-template-columns: 1fr; }
+  .project-stats div { display: grid; grid-template-columns: 7rem 1fr; align-items: baseline; gap: .75rem; }
+  .project-stats dd { margin-top: 0; }
+  .more-projects a { display: block; }
+  .more-projects small { display: block; text-align: left; margin-top: .2rem; }
 }

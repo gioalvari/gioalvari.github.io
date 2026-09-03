@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">GridCast probabilistic energy forecast</title>
+  <desc id="desc">An hourly energy demand curve with an expanding calibrated uncertainty interval and an 80.04 percent coverage result.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#10171c"/>
+      <stop offset="1" stop-color="#172a2c"/>
+    </linearGradient>
+    <linearGradient id="band" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#66d4c2" stop-opacity=".42"/>
+      <stop offset="1" stop-color="#66d4c2" stop-opacity=".05"/>
+    </linearGradient>
+    <clipPath id="chart"><rect x="70" y="165" width="1060" height="440" rx="16"/></clipPath>
+  </defs>
+  <rect width="1200" height="720" rx="28" fill="url(#bg)"/>
+  <circle cx="1060" cy="75" r="210" fill="#66d4c2" opacity=".05"/>
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, monospace">
+    <text x="70" y="72" fill="#66d4c2" font-size="20" letter-spacing="3">GRIDCAST / PJME</text>
+    <text x="70" y="122" fill="#f0f4f3" font-family="Georgia, serif" font-size="36">Forecasts with calibrated uncertainty</text>
+    <rect x="942" y="56" width="188" height="72" rx="12" fill="#66d4c2" opacity=".12" stroke="#66d4c2" stroke-opacity=".36"/>
+    <text x="960" y="84" fill="#9aa9a8" font-size="14">HOLDOUT COVERAGE</text>
+    <text x="960" y="111" fill="#f0f4f3" font-size="25" font-weight="700">80.04%</text>
+  </g>
+  <g clip-path="url(#chart)">
+    <rect x="70" y="165" width="1060" height="440" fill="#0d1317"/>
+    <g stroke="#80908f" stroke-opacity=".13">
+      <path d="M70 245H1130M70 325H1130M70 405H1130M70 485H1130M70 565H1130"/>
+      <path d="M222 165V605M374 165V605M526 165V605M678 165V605M830 165V605M982 165V605"/>
+    </g>
+    <path d="M70 430 C125 370 165 375 220 410 S315 515 370 455 S470 290 530 330 S620 470 680 425 S775 250 835 310 S925 500 980 440 S1075 300 1130 345 L1130 490 C1070 445 1035 580 970 525 S875 390 825 435 S735 555 670 515 S575 420 520 440 S425 590 360 560 S270 485 215 505 S120 515 70 555 Z" fill="url(#band)"/>
+    <path d="M70 493 C125 430 166 438 220 461 S313 548 370 505 S470 356 530 382 S623 502 680 467 S774 327 835 376 S924 542 980 486 S1074 365 1130 414" fill="none" stroke="#66d4c2" stroke-width="5" stroke-linecap="round"/>
+    <path d="M70 470 C130 402 164 450 220 435 S316 568 370 477 S462 330 530 410 S618 476 680 441 S775 285 835 392 S916 500 980 459 S1070 325 1130 390" fill="none" stroke="#f7b955" stroke-width="3" stroke-linecap="round" stroke-dasharray="3 10"/>
+  </g>
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="15">
+    <circle cx="85" cy="653" r="5" fill="#f7b955"/><text x="100" y="659" fill="#c7d0cf">actual load</text>
+    <circle cx="245" cy="653" r="5" fill="#66d4c2"/><text x="260" y="659" fill="#c7d0cf">P50 forecast</text>
+    <rect x="415" y="646" width="14" height="14" rx="3" fill="#66d4c2" opacity=".3"/><text x="440" y="659" fill="#c7d0cf">validation-only conformal interval</text>
+    <text x="1130" y="659" fill="#7f8d8c" text-anchor="end">168h horizon</text>
+  </g>
+</svg>

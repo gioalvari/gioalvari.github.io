@@ -1,9 +1,10 @@
 # gioalvari.github.io
 
-Personal site. Two files, no framework, no build step.
+Personal site. No framework and no build step.
 
 - `index.html`
 - `style.css`
+- `assets/projects/*.svg`
 
 Edit and push — GitHub Pages serves `main` directly.
 

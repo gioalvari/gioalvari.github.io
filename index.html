@@ -66,7 +66,7 @@
     <ul>
       <li><a href="#expertise">Expertise</a></li>
       <li><a href="#work">Work</a></li>
-      <li><a href="#code">Code</a></li>
+      <li><a href="#projects">Projects</a></li>
       <li><a href="#story">Story</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
@@ -213,65 +213,116 @@
     </ol>
   </section>
 
-  <!-- ── CODE ───────────────────────────────────────── -->
-  <section class="wrap" id="code">
-    <h2 class="section-title">Things I build on my own time</h2>
+  <!-- ── PROJECTS ───────────────────────────────────── -->
+  <section class="wrap" id="projects">
+    <span class="anchor-alias" id="code" aria-hidden="true"></span>
+    <div class="section-heading">
+      <div>
+        <p class="kicker">Selected open-source work</p>
+        <h2 class="section-title">Projects with the test results left in</h2>
+      </div>
+      <a class="section-link" href="https://github.com/gioalvari">All repositories <span aria-hidden="true">↗</span></a>
+    </div>
     <p class="section-note">
       Mostly to understand what happens underneath the abstractions I use at work.
-      Exploratory, not production software — that distinction matters to me.
+      Exploratory, not production software — with controls, limitations and negative
+      results documented alongside the wins.
     </p>
 
-    <ul class="repos">
-      <li>
-        <a href="https://github.com/gioalvari/radixforge">
-          <h3>RadixForge <span class="lang">C++17</span></h3>
-          <p>
-            When ten agents share the same two-thousand-token system prompt, why compute it ten
-            times? A radix-tree KV-cache orchestrator that shares common prompt prefixes across
-            agents, built on native llama.cpp APIs.
-          </p>
+    <div class="project-grid">
+      <article class="project project-featured project-gridcast">
+        <a class="project-media" href="https://github.com/gioalvari/gridcast" aria-label="View GridCast on GitHub">
+          <picture>
+            <source media="(max-width: 44rem)" srcset="assets/projects/gridcast-mobile.svg">
+            <img src="assets/projects/gridcast.svg" width="1200" height="720" alt="GridCast hourly demand forecast with a calibrated uncertainty interval" loading="lazy" decoding="async">
+          </picture>
         </a>
-      </li>
-      <li>
-        <a href="https://github.com/gioalvari/agent-memory-layer">
-          <h3>Agent Memory Layer <span class="lang">C++17</span></h3>
+        <div class="project-copy">
+          <div class="project-meta">
+            <span class="lang">Python</span>
+            <span>Energy forecasting</span>
+            <span>2026</span>
+          </div>
+          <h3><a href="https://github.com/gioalvari/gridcast">GridCast <span aria-hidden="true">↗</span></a></h3>
           <p>
-            A transparent OpenAI-compatible proxy that gives any agent persistent, searchable
-            memory across sessions. Local embeddings, SQLite vector storage, temporal-decay
-            retrieval. Includes 37 unit and integration tests, with batch embeddings benchmarked
-            at up to 11× throughput on Apple Silicon.
+            A leakage-safe forecasting workbench built around public PJM load and ERA5 weather:
+            chronological validation, explicit baselines, probabilistic forecasts, conformal
+            calibration and decision-aware evaluation.
           </p>
+          <dl class="project-stats">
+            <div><dt>80.04%</dt><dd>calibrated holdout coverage</dd></div>
+            <div><dt>19.07%</dt><dd>MAE below weekly naive</dd></div>
+            <div><dt>0.687 ms</dt><dd>median warm in-process latency</dd></div>
+          </dl>
+          <p class="project-note">The stronger TimesFM result is reported separately because pretraining overlap cannot be ruled out.</p>
+        </div>
+      </article>
+
+      <article class="project project-featured project-bench">
+        <a class="project-media" href="https://github.com/gioalvari/local-llm-bench" aria-label="View LocalLLM Bench on GitHub">
+          <picture>
+            <source media="(max-width: 44rem)" srcset="assets/projects/local-llm-bench-mobile.svg">
+            <img src="assets/projects/local-llm-bench.svg" width="1200" height="720" alt="LocalLLM Bench throughput curve and latency SLO results on Apple M4 Pro" loading="lazy" decoding="async">
+          </picture>
         </a>
-      </li>
-      <li>
-        <a href="https://github.com/gioalvari/global-forecasting">
-          <h3>global-forecasting <span class="lang">Python</span></h3>
+        <div class="project-copy">
+          <div class="project-meta">
+            <span class="lang">Python</span>
+            <span>Local inference</span>
+            <span>2026</span>
+          </div>
+          <h3><a href="https://github.com/gioalvari/local-llm-bench">LocalLLM Bench <span aria-hidden="true">↗</span></a></h3>
           <p>
-            Train a single model across many time series, with automatic lag generation,
-            time-series cross-validation and zero-shot forecasting.
+            A reproducible harness that evaluates local language models on quality, speed and
+            memory together. It fingerprints binaries and hardware, replays seeded traffic, and
+            bootstraps complete fresh-server runs rather than pretending requests are independent.
           </p>
+          <dl class="project-stats">
+            <div><dt>6.8 req/s</dt><dd>observed pipeline plateau</dd></div>
+            <div><dt>433 tok/s</dt><dd>measured output throughput</dd></div>
+            <div><dt>132</dt><dd>tests in the benchmark suite</dd></div>
+          </dl>
+          <p class="project-note">Raw throughput plateaus early; the confidence-supported 500 ms SLO point is much lower at 0.5 req/s.</p>
+        </div>
+      </article>
+
+      <article class="project project-compact project-radix">
+        <a class="project-media" href="https://github.com/gioalvari/radixforge" aria-label="View RadixForge on GitHub">
+          <picture>
+            <source media="(max-width: 44rem)" srcset="assets/projects/radixforge-mobile.svg">
+            <img src="assets/projects/radixforge.svg" width="1200" height="720" alt="RadixForge architecture reusing a common prompt prefix across three agents" loading="lazy" decoding="async">
+          </picture>
         </a>
-      </li>
-      <li>
-        <a href="https://github.com/Dhonveli/hybridforecast">
-          <h3>hybridforecast <span class="lang">Python</span></h3>
-          <p>
-            A library for testing hybrid forecasting models quickly: decompose a series, forecast
-            each component separately, recombine. Most of the work in hybrid forecasting is
-            plumbing — this removes it so you can compare approaches instead.
-          </p>
+        <div class="project-copy">
+          <div class="project-meta"><span class="lang">C++20</span><span>llama.cpp</span></div>
+          <h3><a href="https://github.com/gioalvari/radixforge">RadixForge <span aria-hidden="true">↗</span></a></h3>
+          <p>A radix-tree orchestrator that reuses common prompts across agents by copying cached KV state through native llama.cpp APIs.</p>
+        </div>
+      </article>
+
+      <article class="project project-compact project-memory">
+        <a class="project-media" href="https://github.com/gioalvari/agent-memory-layer" aria-label="View Agent Memory Layer on GitHub">
+          <picture>
+            <source media="(max-width: 44rem)" srcset="assets/projects/agent-memory-mobile.svg">
+            <img src="assets/projects/agent-memory.svg" width="1200" height="720" alt="Agent Memory Layer proxy embedding, retrieving and injecting local memories" loading="lazy" decoding="async">
+          </picture>
         </a>
-      </li>
-      <li>
-        <a href="https://github.com/gioalvari/ats-checker">
-          <h3>ats-checker <span class="lang">Python</span></h3>
-          <p>
-            Scores a CV against a job description using local LLM embeddings and TF-IDF, then
-            suggests concrete edits. Built because I got tired of guessing what the filter wanted.
-          </p>
-        </a>
-      </li>
-    </ul>
+        <div class="project-copy">
+          <div class="project-meta"><span class="lang">C++17</span><span>Local-first agents</span></div>
+          <h3><a href="https://github.com/gioalvari/agent-memory-layer">Agent Memory Layer <span aria-hidden="true">↗</span></a></h3>
+          <p>An OpenAI-compatible proxy for persistent local agent memory, with SQLite retrieval, local embeddings, temporal decay and per-agent namespaces.</p>
+        </div>
+      </article>
+    </div>
+
+    <div class="more-projects">
+      <h3 id="more-projects-title">More experiments</h3>
+      <ul>
+        <li><a href="https://github.com/gioalvari/global-forecasting"><span>global-forecasting</span><small>one model across many time series</small></a></li>
+        <li><a href="https://github.com/Dhonveli/hybridforecast"><span>hybridforecast</span><small>composable decomposition experiments</small></a></li>
+        <li><a href="https://github.com/gioalvari/ats-checker"><span>ats-checker</span><small>local embedding CV analysis</small></a></li>
+      </ul>
+    </div>
 
     <p class="footnote">
       Older work — bioinformatics, Kaggle competitions, early forecasting experiments — lives on

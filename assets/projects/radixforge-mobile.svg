@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="360" viewBox="0 0 600 360" role="img" aria-labelledby="title desc">
+  <title id="title">RadixForge prompt-prefix reuse</title>
+  <desc id="desc">Three agent requests reuse a cached common prompt before decoding their own token deltas.</desc>
+  <defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="#11171a"/><stop offset="1" stop-color="#162b25"/></linearGradient></defs>
+  <rect width="600" height="360" rx="20" fill="url(#bg)"/>
+  <text x="30" y="42" fill="#77e1aa" font-family="ui-monospace, monospace" font-size="18" letter-spacing="2">RADIXFORGE / C++20</text>
+  <text x="30" y="78" fill="#f0f7f3" font-family="Georgia, serif" font-size="25">Reuse the common prompt</text>
+  <g fill="#17201f" stroke="#466057" stroke-width="2"><rect x="35" y="115" width="130" height="54" rx="10"/><rect x="235" y="115" width="130" height="54" rx="10"/><rect x="435" y="115" width="130" height="54" rx="10"/></g>
+  <g fill="#d6e1dc" font-family="ui-monospace, monospace" font-size="15" text-anchor="middle"><text x="100" y="148">AGENT A</text><text x="300" y="148">AGENT B</text><text x="500" y="148">AGENT C</text></g>
+  <g fill="none" stroke="#77e1aa" stroke-width="3"><path d="M100 169V200H300M300 169V220M500 169V200H300"/></g>
+  <rect x="205" y="220" width="190" height="80" rx="16" fill="#77e1aa" opacity=".12" stroke="#77e1aa" stroke-width="3"/>
+  <text x="300" y="253" fill="#77e1aa" font-family="ui-monospace, monospace" font-size="14" text-anchor="middle">CACHED PREFIX</text>
+  <text x="300" y="282" fill="#f0f7f3" font-family="Georgia, serif" font-size="24" text-anchor="middle">copy KV state</text>
+</svg>

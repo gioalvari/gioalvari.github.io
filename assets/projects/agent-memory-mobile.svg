@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="360" viewBox="0 0 600 360" role="img" aria-labelledby="title desc">
+  <title id="title">Agent Memory Layer local proxy</title>
+  <desc id="desc">An agent and language model connect through a local memory proxy backed by SQLite and local embeddings.</desc>
+  <defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="#171318"/><stop offset="1" stop-color="#2d202b"/></linearGradient><marker id="a" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#ec8dc5"/></marker></defs>
+  <rect width="600" height="360" rx="20" fill="url(#bg)"/>
+  <text x="30" y="42" fill="#f19dce" font-family="ui-monospace, monospace" font-size="18" letter-spacing="2">AGENT MEMORY</text>
+  <text x="30" y="78" fill="#fff2fa" font-family="Georgia, serif" font-size="25">Persistent, local, transparent</text>
+  <g fill="#211a21" stroke="#65495c" stroke-width="2"><rect x="25" y="145" width="120" height="70" rx="12"/><rect x="455" y="145" width="120" height="70" rx="12"/></g>
+  <g fill="#fff2fa" font-family="ui-monospace, monospace" font-size="15" text-anchor="middle"><text x="85" y="185">AGENT</text><text x="515" y="185">LLM</text></g>
+  <path d="M145 180H205M395 180H455" stroke="#ec8dc5" stroke-width="3" marker-end="url(#a)"/>
+  <rect x="205" y="115" width="190" height="130" rx="18" fill="#2a1f29" stroke="#ec8dc5" stroke-width="3"/>
+  <text x="300" y="153" fill="#fff2fa" font-family="Georgia, serif" font-size="23" text-anchor="middle">Memory proxy</text>
+  <text x="300" y="187" fill="#f19dce" font-family="ui-monospace, monospace" font-size="13" text-anchor="middle">SEARCH · INJECT · SAVE</text>
+  <text x="300" y="219" fill="#ad8d9f" font-family="ui-monospace, monospace" font-size="13" text-anchor="middle">SQLite + local embeddings</text>
+  <rect x="205" y="276" width="190" height="48" rx="10" fill="#211a21" stroke="#65495c"/>
+  <text x="300" y="306" fill="#f19dce" font-family="ui-monospace, monospace" font-size="14" text-anchor="middle">ZERO CLOUD CALLS</text>
+</svg>

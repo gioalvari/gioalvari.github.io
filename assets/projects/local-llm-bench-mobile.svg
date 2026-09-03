@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="360" viewBox="0 0 600 360" role="img" aria-labelledby="title desc">
+  <title id="title">LocalLLM Bench measured capacity curve</title>
+  <desc id="desc">Local language model throughput plateaus at 6.8 requests per second on an Apple M4 Pro.</desc>
+  <defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="#11131b"/><stop offset="1" stop-color="#202039"/></linearGradient><linearGradient id="area" x2="0" y2="1"><stop stop-color="#9c8cff" stop-opacity=".42"/><stop offset="1" stop-color="#9c8cff" stop-opacity="0"/></linearGradient></defs>
+  <rect width="600" height="360" rx="20" fill="url(#bg)"/>
+  <text x="30" y="42" fill="#b6aaff" font-family="ui-monospace, monospace" font-size="18" letter-spacing="2">LOCALLLM BENCH</text>
+  <text x="30" y="78" fill="#f3f1ff" font-family="Georgia, serif" font-size="25">Measured local inference</text>
+  <g stroke="#8d8ca7" stroke-opacity=".18"><path d="M40 140H390M40 205H390M40 270H390"/><path d="M40 120V290M155 120V290M270 120V290M385 120V290"/></g>
+  <path d="M40 290L125 250L210 210L300 145L385 145V290Z" fill="url(#area)"/>
+  <path d="M40 290L125 250L210 210L300 145L385 145" fill="none" stroke="#9c8cff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="420" y="120" width="150" height="170" rx="14" fill="#171827" stroke="#4b496f"/>
+  <text x="495" y="158" fill="#9998b2" font-family="ui-monospace, monospace" font-size="13" text-anchor="middle">PLATEAU</text>
+  <text x="495" y="216" fill="#f3f1ff" font-family="Georgia, serif" font-size="48" text-anchor="middle">6.8</text>
+  <text x="495" y="246" fill="#c2baff" font-family="ui-monospace, monospace" font-size="16" text-anchor="middle">req/s</text>
+  <text x="495" y="274" fill="#9998b2" font-family="ui-monospace, monospace" font-size="12" text-anchor="middle">8 fresh runs</text>
+</svg>

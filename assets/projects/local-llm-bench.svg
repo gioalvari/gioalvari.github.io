@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">LocalLLM Bench throughput and latency study</title>
+  <desc id="desc">A measured throughput curve plateaus near 6.8 requests per second while a separate SLO panel shows the confidence-supported operating point.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#11131b"/>
+      <stop offset="1" stop-color="#202039"/>
+    </linearGradient>
+    <linearGradient id="area" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#9c8cff" stop-opacity=".35"/>
+      <stop offset="1" stop-color="#9c8cff" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="720" rx="28" fill="url(#bg)"/>
+  <circle cx="1080" cy="70" r="220" fill="#9c8cff" opacity=".06"/>
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, monospace">
+    <text x="70" y="72" fill="#b6aaff" font-size="20" letter-spacing="3">LOCALLLM BENCH / M4 PRO</text>
+    <text x="70" y="122" fill="#f3f1ff" font-family="Georgia, serif" font-size="36">Quality, speed and memory in one experiment</text>
+  </g>
+  <rect x="70" y="166" width="720" height="440" rx="16" fill="#0e1017" stroke="#3b3b5c"/>
+  <g stroke="#8d8ca7" stroke-opacity=".16">
+    <path d="M135 220H735M135 300H735M135 380H735M135 460H735M135 540H735"/>
+    <path d="M135 220V540M285 220V540M435 220V540M585 220V540M735 220V540"/>
+  </g>
+  <path d="M135 540 L235 470 L335 385 L535 266 L735 267 L735 540 Z" fill="url(#area)"/>
+  <path d="M135 540 L235 470 L335 385 L535 266 L735 267" fill="none" stroke="#9c8cff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+  <g fill="#0e1017" stroke="#c2baff" stroke-width="4">
+    <circle cx="235" cy="470" r="8"/><circle cx="335" cy="385" r="8"/><circle cx="535" cy="266" r="8"/><circle cx="735" cy="267" r="8"/>
+  </g>
+  <g fill="#9291a9" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14">
+    <text x="116" y="225" text-anchor="end">8</text><text x="116" y="305" text-anchor="end">6</text><text x="116" y="385" text-anchor="end">4</text><text x="116" y="465" text-anchor="end">2</text><text x="116" y="545" text-anchor="end">0</text>
+    <text x="235" y="572" text-anchor="middle">2</text><text x="335" y="572" text-anchor="middle">4</text><text x="535" y="572" text-anchor="middle">8</text><text x="735" y="572" text-anchor="middle">12</text>
+    <text x="135" y="199">ACHIEVED REQUESTS / SECOND</text><text x="735" y="592" text-anchor="end">offered req/s</text>
+  </g>
+  <rect x="830" y="166" width="300" height="205" rx="16" fill="#171827" stroke="#3b3b5c"/>
+  <text x="860" y="205" fill="#9291a9" font-family="ui-monospace, monospace" font-size="14">DESCRIPTIVE PLATEAU</text>
+  <text x="860" y="265" fill="#f3f1ff" font-family="Georgia, serif" font-size="50">6.8</text>
+  <text x="860" y="297" fill="#c2baff" font-family="ui-monospace, monospace" font-size="16">req/s</text>
+  <text x="860" y="340" fill="#9291a9" font-family="ui-monospace, monospace" font-size="14">≈ 433 output token/s</text>
+  <rect x="830" y="401" width="300" height="205" rx="16" fill="#171827" stroke="#3b3b5c"/>
+  <text x="860" y="440" fill="#9291a9" font-family="ui-monospace, monospace" font-size="14">500 MS SLO / 95% CI</text>
+  <text x="860" y="500" fill="#f3f1ff" font-family="Georgia, serif" font-size="50">0.5</text>
+  <text x="860" y="532" fill="#c2baff" font-family="ui-monospace, monospace" font-size="16">req/s</text>
+  <text x="860" y="575" fill="#9291a9" font-family="ui-monospace, monospace" font-size="14">highest supported test point</text>
+  <text x="70" y="667" fill="#818096" font-family="ui-monospace, monospace" font-size="15">8 fresh-server runs · seeded Poisson arrivals · run-level bootstrap</text>
+</svg>
