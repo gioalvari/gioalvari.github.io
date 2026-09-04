@@ -35,5 +35,5 @@
   <path d="M600 500V555" stroke="#ec8dc5" stroke-width="3" marker-end="url(#arrow)"/>
   <rect x="930" y="56" width="200" height="72" rx="12" fill="#ec8dc5" opacity=".1" stroke="#ec8dc5" stroke-opacity=".35"/>
   <text x="950" y="84" fill="#ad8d9f" font-family="ui-monospace, monospace" font-size="14">LOCAL-FIRST</text>
-  <text x="950" y="111" fill="#fff2fa" font-family="ui-monospace, monospace" font-size="21" font-weight="700">zero cloud calls</text>
+  <text x="950" y="111" fill="#fff2fa" font-family="ui-monospace, monospace" font-size="19" font-weight="700">local storage</text>
 </svg>

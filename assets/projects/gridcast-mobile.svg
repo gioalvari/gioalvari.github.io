@@ -9,6 +9,6 @@
   <path d="M30 268C80 218 112 225 160 246S240 304 290 263S360 185 410 226S495 303 570 250" fill="none" stroke="#66d4c2" stroke-width="5" stroke-linecap="round"/>
   <path d="M30 250C80 195 115 245 160 222S235 320 290 240S360 170 410 245S500 275 570 225" fill="none" stroke="#f7b955" stroke-width="3" stroke-linecap="round" stroke-dasharray="3 9"/>
   <rect x="422" y="28" width="148" height="66" rx="10" fill="#66d4c2" opacity=".12" stroke="#66d4c2"/>
-  <text x="496" y="53" fill="#a9b6b5" font-family="ui-monospace, monospace" font-size="12" text-anchor="middle">HOLDOUT COVERAGE</text>
-  <text x="496" y="80" fill="#f0f4f3" font-family="Georgia, serif" font-size="25" text-anchor="middle">80.04%</text>
+  <text x="496" y="53" fill="#a9b6b5" font-family="ui-monospace, monospace" font-size="12" text-anchor="middle">UNCERTAINTY</text>
+  <text x="496" y="80" fill="#f0f4f3" font-family="Georgia, serif" font-size="22" text-anchor="middle">calibrated</text>
 </svg>

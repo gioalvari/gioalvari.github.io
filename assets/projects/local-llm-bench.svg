@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
   <title id="title">LocalLLM Bench throughput and latency study</title>
-  <desc id="desc">A measured throughput curve plateaus near 6.8 requests per second while a separate SLO panel shows the confidence-supported operating point.</desc>
+  <desc id="desc">A measured local-language-model throughput curve with separate panels for throughput and latency evaluation.</desc>
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
       <stop stop-color="#11131b"/>
@@ -33,14 +33,12 @@
     <text x="135" y="199">ACHIEVED REQUESTS / SECOND</text><text x="735" y="592" text-anchor="end">offered req/s</text>
   </g>
   <rect x="830" y="166" width="300" height="205" rx="16" fill="#171827" stroke="#3b3b5c"/>
-  <text x="860" y="205" fill="#9291a9" font-family="ui-monospace, monospace" font-size="14">DESCRIPTIVE PLATEAU</text>
-  <text x="860" y="265" fill="#f3f1ff" font-family="Georgia, serif" font-size="50">6.8</text>
-  <text x="860" y="297" fill="#c2baff" font-family="ui-monospace, monospace" font-size="16">req/s</text>
-  <text x="860" y="340" fill="#9291a9" font-family="ui-monospace, monospace" font-size="14">≈ 433 output token/s</text>
+  <text x="860" y="205" fill="#9291a9" font-family="ui-monospace, monospace" font-size="14">THROUGHPUT</text>
+  <text x="860" y="265" fill="#f3f1ff" font-family="Georgia, serif" font-size="34">plateau</text>
+  <text x="860" y="305" fill="#c2baff" font-family="ui-monospace, monospace" font-size="16">measured locally</text>
   <rect x="830" y="401" width="300" height="205" rx="16" fill="#171827" stroke="#3b3b5c"/>
-  <text x="860" y="440" fill="#9291a9" font-family="ui-monospace, monospace" font-size="14">500 MS SLO / 95% CI</text>
-  <text x="860" y="500" fill="#f3f1ff" font-family="Georgia, serif" font-size="50">0.5</text>
-  <text x="860" y="532" fill="#c2baff" font-family="ui-monospace, monospace" font-size="16">req/s</text>
-  <text x="860" y="575" fill="#9291a9" font-family="ui-monospace, monospace" font-size="14">highest supported test point</text>
+  <text x="860" y="440" fill="#9291a9" font-family="ui-monospace, monospace" font-size="14">LATENCY SLO</text>
+  <text x="860" y="500" fill="#f3f1ff" font-family="Georgia, serif" font-size="34">run-level</text>
+  <text x="860" y="540" fill="#c2baff" font-family="ui-monospace, monospace" font-size="16">confidence intervals</text>
   <text x="70" y="667" fill="#818096" font-family="ui-monospace, monospace" font-size="15">8 fresh-server runs · seeded Poisson arrivals · run-level bootstrap</text>
 </svg>

@@ -13,5 +13,5 @@
   <text x="300" y="187" fill="#f19dce" font-family="ui-monospace, monospace" font-size="13" text-anchor="middle">SEARCH · INJECT · SAVE</text>
   <text x="300" y="219" fill="#ad8d9f" font-family="ui-monospace, monospace" font-size="13" text-anchor="middle">SQLite + local embeddings</text>
   <rect x="205" y="276" width="190" height="48" rx="10" fill="#211a21" stroke="#65495c"/>
-  <text x="300" y="306" fill="#f19dce" font-family="ui-monospace, monospace" font-size="14" text-anchor="middle">ZERO CLOUD CALLS</text>
+  <text x="300" y="306" fill="#f19dce" font-family="ui-monospace, monospace" font-size="14" text-anchor="middle">LOCAL STORAGE</text>
 </svg>
