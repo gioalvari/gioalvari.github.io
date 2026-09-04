@@ -3,16 +3,16 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Giordano Alvari — Senior AI / ML Engineer</title>
+<title>Giordano Alvari — AI / ML Engineer</title>
 <meta name="description" content="AI and Machine Learning Engineer working on LLM systems, forecasting and applied machine learning. Based in Florence, available remotely across Europe.">
 <meta name="author" content="Giordano Alvari">
 <meta name="color-scheme" content="dark light">
-<meta name="theme-color" content="#0e1012" media="(prefers-color-scheme: dark)">
-<meta name="theme-color" content="#fbfaf8" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0c1210" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#f2eee4" media="(prefers-color-scheme: light)">
 <link rel="canonical" href="https://gioalvari.github.io/">
 
 <meta property="og:type" content="profile">
-<meta property="og:title" content="Giordano Alvari — Senior AI / ML Engineer">
+<meta property="og:title" content="Giordano Alvari — AI / ML Engineer">
 <meta property="og:description" content="LLM systems, forecasting and applied machine learning — built with careful evaluation and practical engineering.">
 <meta property="og:url" content="https://gioalvari.github.io/">
 <meta property="og:image" content="https://gioalvari.github.io/og-2026-09.png">
@@ -27,7 +27,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 <script src="site.js" defer></script>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E◆%3C/text%3E%3C/svg%3E">
 
 <script type="application/ld+json">
 {
@@ -58,303 +58,270 @@
 </head>
 
 <body>
-
 <a class="skip" href="#main">Skip to content</a>
+<div class="reading-progress" aria-hidden="true"></div>
 
-<header class="wrap">
-  <nav aria-label="Primary">
-    <span class="mark">GA</span>
+<header class="site-header">
+  <nav class="wrap" aria-label="Primary">
+    <a class="wordmark" href="#top" aria-label="Giordano Alvari — home">
+      <span class="wordmark-name">Giordano Alvari</span>
+      <span class="wordmark-edition">Field notes / 2026</span>
+    </a>
     <ul>
-      <li><a href="#expertise">Expertise</a></li>
+      <li><a href="#practice">Practice</a></li>
       <li><a href="#work">Work</a></li>
       <li><a href="#projects">Projects</a></li>
-      <li><a href="#story">Story</a></li>
+      <li><a href="#about">About</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
   </nav>
 </header>
 
 <main id="main">
-
-  <!-- ── HERO ───────────────────────────────────────── -->
-  <section class="wrap hero">
+  <section class="hero wrap" id="top">
     <div class="hero-copy">
-      <p class="eyebrow">AI / ML Engineer · Florence, Italy · Remote Europe</p>
-      <h1>I design, build and evaluate<br><span>machine-learning systems.</span></h1>
+      <p class="folio">Field note 01 <span>/</span> Applied machine-learning systems</p>
+      <h1>Build the system.<br><em>Document the evidence.</em></h1>
       <p class="lead">
-        My work sits between applied research and software engineering: LLM tools for operations,
-        forecasting and decision systems, and the infrastructure needed to run them. I care about
-        clear evaluation, useful interfaces and systems people can inspect.
+        I work between applied research and software engineering: LLM tools for operations,
+        forecasting and decision systems, and the infrastructure needed to run them.
       </p>
-      <ul class="links">
-        <li><a href="mailto:giordano.alvari@gmail.com">Email</a></li>
-        <li><a href="https://www.linkedin.com/in/giordano-alvari-137b7b10a/" rel="me">LinkedIn</a></li>
-        <li><a href="https://github.com/gioalvari" rel="me">GitHub</a></li>
-        <li><a href="giordano-alvari-cv.pdf">CV (PDF)</a></li>
+      <ul class="hero-links">
+        <li><a href="mailto:giordano.alvari@gmail.com">Email <span aria-hidden="true">↗</span></a></li>
+        <li><a href="https://www.linkedin.com/in/giordano-alvari-137b7b10a/" rel="me">LinkedIn <span aria-hidden="true">↗</span></a></li>
+        <li><a href="https://github.com/gioalvari" rel="me">GitHub <span aria-hidden="true">↗</span></a></li>
+        <li><a href="giordano-alvari-cv.pdf">CV <span aria-hidden="true">↓</span></a></li>
       </ul>
+      <p class="margin-note">A useful result includes the method, the uncertainty and what did not work.</p>
     </div>
-    <div class="hero-orbit" aria-hidden="true">
-      <span class="orbit orbit-a"></span>
-      <span class="orbit orbit-b"></span>
-      <span class="orbit orbit-c"></span>
-      <span class="orbit-core"></span>
-      <span class="orbit-label label-model">model</span>
-      <span class="orbit-label label-data">data</span>
-      <span class="orbit-label label-eval">eval</span>
+
+    <aside class="method-card" aria-labelledby="method-title">
+      <span class="case-tab">Working method</span>
+      <div class="method-heading">
+        <p class="kicker">Iterative, not linear</p>
+        <h2 id="method-title">From question to evidence</h2>
+      </div>
+      <ol>
+        <li><span>01</span><div><strong>Frame</strong><small>Define the decision and failure modes.</small></div></li>
+        <li><span>02</span><div><strong>Build</strong><small>Ship the smallest system worth testing.</small></div></li>
+        <li><span>03</span><div><strong>Evaluate</strong><small>Measure behavior, not only model scores.</small></div></li>
+        <li><span>04</span><div><strong>Document</strong><small>Keep assumptions and limits visible.</small></div></li>
+      </ol>
+      <p class="method-loop">Question → system → evidence → next question</p>
+    </aside>
+
+    <div class="hero-footer" aria-hidden="true">
+      <span>Florence, Italy</span>
+      <span>Issue 2026.09 · Page 01</span>
     </div>
   </section>
 
-  <section class="wrap" id="expertise">
-    <h2 class="section-title">What I work on</h2>
-    <div class="expertise-grid">
-      <article>
-        <p class="kicker">Production AI</p>
+  <section class="chapter wrap" id="practice">
+    <span class="anchor-alias" id="expertise" aria-hidden="true"></span>
+    <header class="chapter-header">
+      <span class="chapter-number">01</span>
+      <div>
+        <p class="kicker">Practice</p>
+        <h2>What I work on</h2>
+      </div>
+      <p>Three areas that tend to meet in the same project.</p>
+    </header>
+
+    <div class="practice-grid">
+      <article class="practice-card">
+        <span class="practice-index">01 / Systems</span>
         <h3>LLM agents and retrieval</h3>
-        <p>Tool-using agents, multi-agent orchestration, RAG, authorization-aware retrieval, Text2SQL and evaluation for operational workflows.</p>
+        <p>Tool-using agents, multi-agent orchestration, authorization-aware retrieval, Text2SQL and evaluation for operational workflows.</p>
       </article>
-      <article>
-        <p class="kicker">Machine learning</p>
-        <h3>Forecasting and decision systems</h3>
-        <p>Hierarchical forecasting, calibrated uncertainty, scenario simulation, churn modelling and large-scale feature pipelines.</p>
+      <article class="practice-card">
+        <span class="practice-index">02 / Forecasts</span>
+        <h3>Forecasting and decisions</h3>
+        <p>Hierarchical forecasting, calibrated uncertainty, scenario simulation and the pipelines that make the outputs usable.</p>
       </article>
-      <article>
-        <p class="kicker">Engineering practice</p>
+      <article class="practice-card">
+        <span class="practice-index">03 / Engineering</span>
         <h3>Making systems usable</h3>
-        <p>Architecture, hands-on delivery, evaluation, observability, governance and deployment on AWS and Kubernetes.</p>
+        <p>Architecture, hands-on delivery, observability, governance and deployment on AWS and Kubernetes.</p>
       </article>
     </div>
   </section>
 
-  <!-- ── WORK ───────────────────────────────────────── -->
-  <section class="wrap" id="work">
-    <h2 class="section-title">Selected professional work</h2>
-    <p class="section-note">
-      A few areas I've worked on at Enel, described without internal names or confidential details.
-    </p>
+  <section class="chapter wrap" id="work">
+    <header class="chapter-header">
+      <span class="chapter-number">02</span>
+      <div>
+        <p class="kicker">Professional work</p>
+        <h2>Selected field work</h2>
+      </div>
+      <p>Work at Enel, described without internal names or confidential details.</p>
+    </header>
 
-    <ol class="cards">
-
-      <li class="card">
-        <p class="kicker">2024 — now · Applied LLM systems</p>
-        <h3>Operational assistants for IT teams</h3>
-        <p>
-          I work on AI-assisted incident resolution for IT operations. The systems follow
-          documented procedures, query monitoring tools and network devices, and return their
-          findings to the ticketing workflows engineers already use.
-        </p>
-        <p>
-          My role spans architecture, implementation and evaluation, in collaboration with
-          operations teams in Italy and Spain.
-        </p>
-        <p class="aside">
-          The interesting part is not the orchestration itself; it is designing useful boundaries
-          between automation and the engineers accountable for the outcome.
-        </p>
-        <p class="stack">LangChain · LlamaIndex · AWS Bedrock · FastAPI · Kubernetes · pgvector</p>
+    <ol class="work-ledger">
+      <li class="work-entry">
+        <div class="work-date"><span>2024</span><small>Now</small></div>
+        <article>
+          <p class="kicker">Applied LLM systems</p>
+          <h3>Operational assistants for IT teams</h3>
+          <p>Systems that follow documented procedures, query monitoring tools and network devices, and return findings to the ticketing workflows engineers already use.</p>
+          <p class="work-note">My role spans architecture, implementation and evaluation, in collaboration with operations teams in Italy and Spain.</p>
+        </article>
+        <aside aria-label="Technologies used for operational assistants"><span>LangChain</span><span>AWS Bedrock</span><span>FastAPI</span><span>Kubernetes</span></aside>
       </li>
-
-      <li class="card">
-        <p class="kicker">2023 — now · Forecasting and uncertainty</p>
-        <h3>Forecasting customer-base evolution</h3>
-        <p>
-          I helped take a multi-year forecasting programme from early prototype to production:
-          hierarchical models for customer churn and payment-default disconnections, combined
-          with conformal intervals and scenario simulation.
-        </p>
-        <p>
-          My role covered architecture, delivery, coordination of a small technical team, and
-          working with the people who use the forecasts for planning.
-        </p>
-        <p class="aside">
-          A calibrated interval is often more useful than a single confident-looking number.
-        </p>
-        <p class="stack">statsmodels · Nixtla · skforecast · conformal prediction · Spark · FastAPI</p>
+      <li class="work-entry">
+        <div class="work-date"><span>2023</span><small>Now</small></div>
+        <article>
+          <p class="kicker">Forecasting and uncertainty</p>
+          <h3>Forecasting customer-base evolution</h3>
+          <p>Hierarchical models for customer churn and payment-default disconnections, combined with conformal intervals and scenario simulation.</p>
+          <p class="work-note">The work moved from early prototype to a production planning system with a small technical team behind it.</p>
+        </article>
+        <aside aria-label="Technologies used for customer forecasting"><span>Nixtla</span><span>skforecast</span><span>Spark</span><span>Conformal prediction</span></aside>
       </li>
-
-      <li class="card">
-        <p class="kicker">2025 · RAG · in production · serverless</p>
-        <h3>Retrieval for controlled audit documentation</h3>
-        <p>
-          Internal audit documentation is exactly the kind of corpus where a helpful,
-          over-confident chatbot is worse than no chatbot. This one answers only from documents
-          the person asking is actually cleared to see, and cites its sources. Serverless on AWS,
-          shipped through a governed pipeline with security gating.
-        </p>
+      <li class="work-entry">
+        <div class="work-date"><span>2025</span><small>Production</small></div>
+        <article>
+          <p class="kicker">Retrieval and access control</p>
+          <h3>Controlled audit documentation</h3>
+          <p>A retrieval assistant that answers from documents the person asking is cleared to see, cites its sources and runs through a governed deployment pipeline.</p>
+        </article>
+        <aside aria-label="Approaches used for audit retrieval"><span>RAG</span><span>Serverless</span><span>Security gating</span></aside>
       </li>
-
-      <li class="card">
-        <p class="kicker">2020 — 2023 · Applied machine learning</p>
-        <h3>Customer and energy use cases</h3>
-        <p>
-          Earlier work included churn and claim prediction on Spark, customer segmentation and
-          cross-selling models, and anomaly detection for battery energy storage systems.
-        </p>
-        <p class="stack">PySpark · XGBoost · CatBoost · H2O · MLflow · Airflow</p>
+      <li class="work-entry">
+        <div class="work-date"><span>2020</span><small>2023</small></div>
+        <article>
+          <p class="kicker">Applied machine learning</p>
+          <h3>Customer and energy use cases</h3>
+          <p>Earlier work included churn and claim prediction on Spark, customer segmentation and anomaly detection for battery energy storage systems.</p>
+        </article>
+        <aside aria-label="Technologies used for applied machine learning"><span>PySpark</span><span>XGBoost</span><span>MLflow</span><span>Airflow</span></aside>
       </li>
-
     </ol>
   </section>
 
-  <!-- ── PROJECTS ───────────────────────────────────── -->
-  <section class="wrap" id="projects">
+  <section class="chapter wrap" id="projects">
     <span class="anchor-alias" id="code" aria-hidden="true"></span>
-    <div class="section-heading">
+    <header class="chapter-header">
+      <span class="chapter-number">03</span>
       <div>
-        <p class="kicker">Selected open-source work</p>
-        <h2 class="section-title">Selected projects</h2>
+        <p class="kicker">Open-source work</p>
+        <h2>Projects as experiments</h2>
       </div>
-      <a class="section-link" href="https://github.com/gioalvari">All repositories <span aria-hidden="true">↗</span></a>
-    </div>
-    <p class="section-note">
-      Open-source experiments in forecasting and local AI systems. They are exploratory rather
-      than production software, and the repositories document methods and limitations.
-    </p>
+      <p>Methods, artifacts and limitations stay next to the result.</p>
+    </header>
 
-    <div class="project-grid">
-      <article class="project project-featured project-gridcast">
-        <a class="project-media" href="https://github.com/gioalvari/gridcast" aria-label="View GridCast on GitHub">
+    <div class="experiment-list">
+      <article class="experiment-sheet project-gridcast">
+        <a class="experiment-media" href="https://github.com/gioalvari/gridcast" aria-label="View GridCast on GitHub">
           <picture>
-            <source media="(max-width: 44rem)" srcset="assets/projects/gridcast-mobile.svg">
+            <source media="(max-width: 46rem)" srcset="assets/projects/gridcast-mobile.svg">
             <img src="assets/projects/gridcast.svg" width="1200" height="720" alt="Illustrative hourly demand forecast with a calibrated uncertainty band" loading="lazy" decoding="async">
           </picture>
         </a>
-        <div class="project-copy">
-          <div class="project-meta">
-            <span class="lang">Python</span>
-            <span>Energy forecasting</span>
-            <span>2026</span>
-          </div>
+        <div class="experiment-copy">
+          <p class="experiment-id">Experiment 01 / Forecasting</p>
           <h3><a href="https://github.com/gioalvari/gridcast">GridCast <span aria-hidden="true">↗</span></a></h3>
-          <p>
-            A leakage-safe forecasting workbench built around public PJM load and ERA5 weather:
-            chronological validation, explicit baselines, probabilistic forecasts, conformal
-            calibration and decision-aware evaluation.
-          </p>
-          <p class="project-method">Chronological validation · conformal intervals · public data</p>
-          <p class="project-note">The stronger TimesFM result is reported separately because pretraining overlap cannot be ruled out.</p>
+          <p class="experiment-lead">A leakage-safe workbench for probabilistic energy forecasting on public PJM load and ERA5 weather.</p>
+          <dl class="experiment-notes">
+            <div><dt>Question</dt><dd>How should uncertainty travel with a weekly load forecast?</dd></div>
+            <div><dt>Method</dt><dd>Chronological validation, explicit baselines and conformal calibration.</dd></div>
+            <div><dt>Limit</dt><dd>Foundation-model results are isolated where pretraining overlap cannot be ruled out.</dd></div>
+          </dl>
         </div>
+        <span class="sheet-tab">Case 01</span>
       </article>
 
-      <article class="project project-featured project-bench">
-        <a class="project-media" href="https://github.com/gioalvari/local-llm-bench" aria-label="View LocalLLM Bench on GitHub">
+      <article class="experiment-sheet experiment-reverse project-bench">
+        <a class="experiment-media" href="https://github.com/gioalvari/local-llm-bench" aria-label="View LocalLLM Bench on GitHub">
           <picture>
-            <source media="(max-width: 44rem)" srcset="assets/projects/local-llm-bench-mobile.svg">
+            <source media="(max-width: 46rem)" srcset="assets/projects/local-llm-bench-mobile.svg">
             <img src="assets/projects/local-llm-bench.svg" width="1200" height="720" alt="Illustrative local language-model throughput curve and evaluation panels" loading="lazy" decoding="async">
           </picture>
         </a>
-        <div class="project-copy">
-          <div class="project-meta">
-            <span class="lang">Python</span>
-            <span>Local inference</span>
-            <span>2026</span>
-          </div>
+        <div class="experiment-copy">
+          <p class="experiment-id">Experiment 02 / Local inference</p>
           <h3><a href="https://github.com/gioalvari/local-llm-bench">LocalLLM Bench <span aria-hidden="true">↗</span></a></h3>
-          <p>
-            A reproducible harness that evaluates local language models on quality, speed and
-            memory together. It fingerprints binaries and hardware, replays seeded traffic, and
-            bootstraps complete fresh-server runs rather than pretending requests are independent.
-          </p>
-          <p class="project-method">Seeded load · hardware fingerprints · run-level intervals</p>
-          <p class="project-note">Raw throughput plateaus early; the confidence-supported 500 ms SLO point is much lower at 0.5 req/s.</p>
+          <p class="experiment-lead">A reproducible harness that evaluates local language models on quality, speed and memory together.</p>
+          <dl class="experiment-notes">
+            <div><dt>Question</dt><dd>Which model configuration fits a real hardware budget?</dd></div>
+            <div><dt>Method</dt><dd>Seeded load, binary fingerprints and run-level confidence intervals.</dd></div>
+            <div><dt>Limit</dt><dd>Capacity conclusions remain specific to the tested host and protocol.</dd></div>
+          </dl>
         </div>
+        <span class="sheet-tab">Case 02</span>
       </article>
+    </div>
 
-      <article class="project project-compact project-radix">
-        <a class="project-media" href="https://github.com/gioalvari/radixforge" aria-label="View RadixForge on GitHub">
+    <div class="project-pair">
+      <article class="project-small project-radix">
+        <a class="project-small-media" href="https://github.com/gioalvari/radixforge" aria-label="View RadixForge on GitHub">
           <picture>
-            <source media="(max-width: 44rem)" srcset="assets/projects/radixforge-mobile.svg">
+            <source media="(max-width: 46rem)" srcset="assets/projects/radixforge-mobile.svg">
             <img src="assets/projects/radixforge.svg" width="1200" height="720" alt="RadixForge architecture reusing a common prompt prefix across three agents" loading="lazy" decoding="async">
           </picture>
         </a>
-        <div class="project-copy">
-          <div class="project-meta"><span class="lang">C++20</span><span>llama.cpp</span></div>
-          <h3><a href="https://github.com/gioalvari/radixforge">RadixForge <span aria-hidden="true">↗</span></a></h3>
-          <p>A radix-tree orchestrator that reuses common prompts across agents by copying cached KV state through native llama.cpp APIs.</p>
-        </div>
+        <div><p class="experiment-id">Study 03 / C++</p><h3><a href="https://github.com/gioalvari/radixforge">RadixForge <span aria-hidden="true">↗</span></a></h3><p>Reuse common prompts across agents by copying cached KV state through native llama.cpp APIs.</p></div>
       </article>
-
-      <article class="project project-compact project-memory">
-        <a class="project-media" href="https://github.com/gioalvari/agent-memory-layer" aria-label="View Agent Memory Layer on GitHub">
+      <article class="project-small project-memory">
+        <a class="project-small-media" href="https://github.com/gioalvari/agent-memory-layer" aria-label="View Agent Memory Layer on GitHub">
           <picture>
-            <source media="(max-width: 44rem)" srcset="assets/projects/agent-memory-mobile.svg">
-            <img src="assets/projects/agent-memory.svg" width="1200" height="720" alt="Agent Memory Layer proxy embedding, retrieving and injecting local memories" loading="lazy" decoding="async">
+            <source media="(max-width: 46rem)" srcset="assets/projects/agent-memory-mobile.svg">
+            <img src="assets/projects/agent-memory.svg" width="1200" height="720" alt="Agent Memory Layer proxy retrieving and injecting local memories" loading="lazy" decoding="async">
           </picture>
         </a>
-        <div class="project-copy">
-          <div class="project-meta"><span class="lang">C++17</span><span>Local-first agents</span></div>
-          <h3><a href="https://github.com/gioalvari/agent-memory-layer">Agent Memory Layer <span aria-hidden="true">↗</span></a></h3>
-          <p>An OpenAI-compatible proxy for persistent local agent memory, with SQLite retrieval, local embeddings, temporal decay and per-agent namespaces.</p>
-        </div>
+        <div><p class="experiment-id">Study 04 / C++17</p><h3><a href="https://github.com/gioalvari/agent-memory-layer">Agent Memory Layer <span aria-hidden="true">↗</span></a></h3><p>An OpenAI-compatible proxy for persistent local memory with SQLite retrieval and local embeddings.</p></div>
       </article>
     </div>
 
-    <div class="more-projects">
-      <h3 id="more-projects-title">More experiments</h3>
+    <div class="project-index">
+      <h3>More experiments</h3>
       <ul>
-        <li><a href="https://github.com/gioalvari/global-forecasting"><span>global-forecasting</span><small>one model across many time series</small></a></li>
-        <li><a href="https://github.com/Dhonveli/hybridforecast"><span>hybridforecast</span><small>composable decomposition experiments</small></a></li>
-        <li><a href="https://github.com/gioalvari/ats-checker"><span>ats-checker</span><small>local embedding CV analysis</small></a></li>
+        <li><a href="https://github.com/gioalvari/global-forecasting"><span>05</span><strong>global-forecasting</strong><small>one model across many time series</small></a></li>
+        <li><a href="https://github.com/Dhonveli/hybridforecast"><span>06</span><strong>hybridforecast</strong><small>composable decomposition experiments</small></a></li>
+        <li><a href="https://github.com/gioalvari/ats-checker"><span>07</span><strong>ats-checker</strong><small>local embedding CV analysis</small></a></li>
       </ul>
+      <p>Earlier bioinformatics and forecasting work lives on <a href="https://github.com/Dhonveli">github.com/Dhonveli</a>.</p>
     </div>
-
-    <p class="footnote">
-      Older work — bioinformatics, Kaggle competitions, early forecasting experiments — lives on
-      my first account, <a href="https://github.com/Dhonveli">github.com/Dhonveli</a>.
-    </p>
   </section>
 
-  <!-- ── STORY ──────────────────────────────────────── -->
-  <section class="wrap narrow" id="story">
-    <h2 class="section-title">How I got here</h2>
-
-    <p>
-      I started in biology, not software. My master's was in computational biology at the
-      University of Trento, and I spent a year at DKFZ and EMBL in Heidelberg working on
-      single-cell eQTL mapping — trying to find which genetic variants change gene expression,
-      in data where almost every signal is noise wearing a convincing costume. That work became
-      a paper in <a href="https://doi.org/10.1186/s13059-021-02407-x"><em>Genome Biology</em></a>;
-      the <a href="https://github.com/Dhonveli/eQTLlimix_container">containerised pipeline</a>
-      is still on my old GitHub account.
-    </p>
-
-    <p>
-      I don't think of that as a previous life. In biology, a result that looks good is not
-      necessarily a result that is true; the difference often comes down to how the test was set
-      up. That habit still shapes how I approach applied machine learning.
-    </p>
-
-    <p>
-      Then I moved into industry: first applied machine learning on customer data, then forecasting
-      systems, and more recently LLM-based tools for operations. The common thread is an interest
-      in evaluation and in the practical details around a model.
-    </p>
-
-    <p>
-      I'm drawn to energy, pharma and bio, and to organisations doing something worth doing.
-      I live in Florence and work in Italian, English and Spanish.
-    </p>
+  <section class="chapter wrap story" id="about">
+    <span class="anchor-alias" id="story" aria-hidden="true"></span>
+    <header class="chapter-header">
+      <span class="chapter-number">04</span>
+      <div><p class="kicker">Background</p><h2>How I got here</h2></div>
+      <p>From computational biology to applied machine-learning systems.</p>
+    </header>
+    <div class="story-layout">
+      <aside class="story-note" aria-label="Working principle">A result that looks good is not necessarily a result that is true.</aside>
+      <div class="story-copy">
+        <p>I started in biology, not software. My master's was in computational biology at the University of Trento, and I spent a year at DKFZ and EMBL in Heidelberg working on single-cell eQTL mapping. That work became a paper in <a href="https://doi.org/10.1186/s13059-021-02407-x"><em>Genome Biology</em></a>; the <a href="https://github.com/Dhonveli/eQTLlimix_container">containerised pipeline</a> is still on my first GitHub account.</p>
+        <p>That background still shapes how I work. In biology, the difference between an interesting result and a reliable one often comes down to how the test was set up.</p>
+        <p>I then moved into industry: applied machine learning on customer data, forecasting systems, and more recently LLM-based tools for operations. I live in Florence and work in Italian, English and Spanish.</p>
+      </div>
+    </div>
   </section>
 
-  <!-- ── CONTACT ────────────────────────────────────── -->
-  <section class="wrap narrow" id="contact">
-    <h2 class="section-title">Get in touch</h2>
-    <p>
-      I'm open to Senior and Lead AI/ML Engineering roles, including research-oriented engineering
-      teams — remote across Europe or hybrid in Florence.
-    </p>
-    <p class="big-links">
-      <a href="mailto:giordano.alvari@gmail.com">giordano.alvari@gmail.com</a><br>
-      <a href="https://www.linkedin.com/in/giordano-alvari-137b7b10a/">linkedin.com/in/giordano-alvari-137b7b10a</a><br>
-      <a href="https://github.com/gioalvari">github.com/gioalvari</a><br>
-      <a href="giordano-alvari-cv.pdf">CV — PDF, one page</a>
-    </p>
+  <section class="contact-sheet" id="contact">
+    <div class="wrap contact-layout">
+      <div>
+        <p class="folio">Field note 05 / Contact</p>
+        <h2>Start with the problem.</h2>
+      </div>
+      <div>
+        <p>I'm open to Senior and Lead AI/ML Engineering roles, including research-oriented teams — remote across Europe or hybrid in Florence.</p>
+        <ul>
+          <li><a href="mailto:giordano.alvari@gmail.com">giordano.alvari@gmail.com <span aria-hidden="true">↗</span></a></li>
+          <li><a href="https://www.linkedin.com/in/giordano-alvari-137b7b10a/">LinkedIn <span aria-hidden="true">↗</span></a></li>
+          <li><a href="https://github.com/gioalvari">GitHub <span aria-hidden="true">↗</span></a></li>
+          <li><a href="giordano-alvari-cv.pdf">CV — PDF <span aria-hidden="true">↓</span></a></li>
+        </ul>
+      </div>
+    </div>
   </section>
-
 </main>
 
-<footer class="wrap">
-  <p>© <span id="year">2026</span> Giordano Alvari · Built by hand, no framework.</p>
+<footer class="site-footer wrap">
+  <span>© <span id="year">2026</span> Giordano Alvari</span>
+  <span>Built by hand · No framework · Page 05</span>
 </footer>
-
 </body>
 </html>

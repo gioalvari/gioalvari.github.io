@@ -8,12 +8,14 @@ if (!reduceMotion && "IntersectionObserver" in window) {
   document.documentElement.classList.add("has-motion");
 
   const revealTargets = document.querySelectorAll(
-    ".section-title, .section-heading, .expertise-grid article, .card, .project, .more-projects, #story p, #contact > *"
+    ".chapter-header, .practice-card, .work-entry, .experiment-sheet, " +
+      ".project-small, .project-index, .story-note, .story-copy > p, " +
+      ".contact-layout > *"
   );
 
   revealTargets.forEach((target, index) => {
     target.classList.add("reveal");
-    target.style.setProperty("--reveal-delay", `${Math.min(index % 4, 3) * 45}ms`);
+    target.style.setProperty("--reveal-delay", `${Math.min(index % 3, 2) * 55}ms`);
   });
 
   const revealObserver = new IntersectionObserver(
@@ -25,54 +27,54 @@ if (!reduceMotion && "IntersectionObserver" in window) {
         observer.unobserve(entry.target);
       });
     },
-    { threshold: 0.12, rootMargin: "0px 0px -5%" }
+    { threshold: 0.1, rootMargin: "0px 0px -5%" }
   );
 
   revealTargets.forEach((target) => revealObserver.observe(target));
 
-  if (finePointer.matches) {
-    const hero = document.querySelector(".hero");
-    hero?.addEventListener("pointermove", (event) => {
-      const bounds = hero.getBoundingClientRect();
-      hero.style.setProperty("--pointer-x", `${event.clientX - bounds.left}px`);
-      hero.style.setProperty("--pointer-y", `${event.clientY - bounds.top}px`);
-      hero.style.setProperty(
-        "--orbit-shift-x",
-        `${((event.clientX - bounds.left) / bounds.width - 0.5) * 12}px`
-      );
-      hero.style.setProperty(
-        "--orbit-shift-y",
-        `${((event.clientY - bounds.top) / bounds.height - 0.5) * 12}px`
-      );
+  const revealCurrentPosition = () => {
+    revealTargets.forEach((target) => {
+      if (target.getBoundingClientRect().top >= window.innerHeight * 0.95) return;
+      target.classList.add("is-visible");
+      revealObserver.unobserve(target);
     });
+  };
 
-    document.querySelectorAll(".card, .project").forEach((card) => {
-      card.addEventListener("pointermove", (event) => {
-        const bounds = card.getBoundingClientRect();
-        card.style.setProperty("--spot-x", `${event.clientX - bounds.left}px`);
-        card.style.setProperty("--spot-y", `${event.clientY - bounds.top}px`);
-      });
+  window.addEventListener("pageshow", () => requestAnimationFrame(revealCurrentPosition));
+  window.addEventListener("hashchange", () => requestAnimationFrame(revealCurrentPosition));
+  requestAnimationFrame(() => requestAnimationFrame(revealCurrentPosition));
+}
+
+if (!reduceMotion && finePointer.matches) {
+  document.querySelectorAll(".method-card, .experiment-sheet").forEach((sheet) => {
+    sheet.addEventListener("pointermove", (event) => {
+      const bounds = sheet.getBoundingClientRect();
+      sheet.style.setProperty("--sheet-x", `${event.clientX - bounds.left}px`);
+      sheet.style.setProperty("--sheet-y", `${event.clientY - bounds.top}px`);
     });
-  }
+  });
 }
 
 const navLinks = new Map(
-  [...document.querySelectorAll('nav a[href^="#"]')].map((link) => [
-    link.getAttribute("href").slice(1),
-    link,
-  ])
+  [...document.querySelectorAll('.site-header a[href^="#"]')]
+    .filter((link) => link.getAttribute("href") !== "#top")
+    .map((link) => [link.getAttribute("href").slice(1), link])
 );
-
 const navSections = [...navLinks.keys()]
   .map((id) => document.getElementById(id))
   .filter(Boolean);
+const progress = document.querySelector(".reading-progress");
 
 let scrollFrame;
-const updateActiveNavigation = () => {
+const updatePageState = () => {
   scrollFrame = undefined;
-  const headerOffset = document.querySelector("header")?.offsetHeight ?? 0;
+  const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+  const percentage = scrollable > 0 ? Math.min(100, (window.scrollY / scrollable) * 100) : 0;
+  progress?.style.setProperty("--reading-progress", `${percentage}%`);
+
+  const headerOffset = document.querySelector(".site-header")?.offsetHeight ?? 0;
   const activationLine = headerOffset + 24;
-  const footerHeight = document.querySelector("footer")?.offsetHeight ?? 0;
+  const footerHeight = document.querySelector(".site-footer")?.offsetHeight ?? 0;
   const atPageEnd =
     window.scrollY + window.innerHeight >=
     document.documentElement.scrollHeight - footerHeight - 2;
@@ -91,9 +93,9 @@ const updateActiveNavigation = () => {
 window.addEventListener(
   "scroll",
   () => {
-    if (!scrollFrame) scrollFrame = requestAnimationFrame(updateActiveNavigation);
+    if (!scrollFrame) scrollFrame = requestAnimationFrame(updatePageState);
   },
   { passive: true }
 );
-window.addEventListener("resize", updateActiveNavigation);
-updateActiveNavigation();
+window.addEventListener("resize", updatePageState);
+updatePageState();

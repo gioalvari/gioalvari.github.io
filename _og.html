@@ -3,53 +3,17 @@
 <head>
 <meta charset="utf-8">
 <title>Giordano Alvari — social preview</title>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Inter:wght@400&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
 <style>
-  * { margin:0; padding:0; box-sizing:border-box; }
-  body {
-    width:1200px; height:630px;
-    background:#0e1012;
-    color:#d9dde2;
-    font-family:"Inter",sans-serif;
-    display:flex; flex-direction:column; justify-content:center;
-    padding:0 88px;
-    position:relative; overflow:hidden;
-  }
-  body::after{
-    content:""; position:absolute; right:-180px; top:-180px;
-    width:620px; height:620px; border-radius:50%;
-    background:radial-gradient(circle,rgba(29,58,122,.5) 0%,transparent 70%);
-  }
-  .glow{
-    position:absolute; right:-200px; top:-220px;
-    width:700px; height:700px; border-radius:50%;
-    background:radial-gradient(circle,rgba(127,178,255,.16) 0%,rgba(127,178,255,0) 68%);
-  }
-  .eyebrow{
-    font-family:ui-monospace,monospace; font-size:19px; letter-spacing:.14em;
-    text-transform:uppercase; color:#7fb2ff; margin-bottom:34px;
-  }
-  h1{
-    font-family:"Fraunces",serif; font-weight:600; font-size:76px;
-    line-height:1.06; letter-spacing:-.02em; max-width:940px;
-  }
-  p{ margin-top:34px; font-size:27px; color:#8b939c; max-width:840px; line-height:1.45; }
-  .foot{
-    position:absolute; left:88px; bottom:60px;
-    font-family:ui-monospace,monospace; font-size:20px; color:#8b939c;
-    display:flex; gap:26px; align-items:center;
-  }
-  .dot{ width:6px;height:6px;border-radius:50%;background:#38507a; }
+*{box-sizing:border-box}body{width:1200px;height:630px;margin:0;overflow:hidden;color:#202822;background-color:#f2eee4;background-image:linear-gradient(rgb(61 91 77/8%) 1px,transparent 1px),linear-gradient(90deg,rgb(61 91 77/8%) 1px,transparent 1px);background-size:28px 28px;padding:54px 66px;font-family:Inter,sans-serif}.top{display:flex;justify-content:space-between;align-items:center;padding-bottom:18px;border-bottom:1px solid #94a098}.name{font:600 20px Fraunces,serif}.edition,.folio,.foot{font:12px JetBrains Mono,monospace;letter-spacing:.09em;text-transform:uppercase}.edition{color:#536159}.folio{margin-top:72px;color:#2f7464}.hero{display:grid;grid-template-columns:1fr 310px;gap:70px;align-items:center}.copy h1{max-width:680px;margin:17px 0 0;font:600 66px/.97 Fraunces,serif;letter-spacing:-.04em}.copy em{color:#783a2d;font-weight:400}.method{position:relative;border:1px solid #94a098;background:#f9f6ee;padding:25px;box-shadow:8px 8px #d6d4ca}.tab{position:absolute;right:-9px;top:-14px;padding:7px 10px;color:#f2eee4;background:#bf4c35;font:10px JetBrains Mono,monospace;text-transform:uppercase}.method small{color:#2f7464;font:10px JetBrains Mono,monospace;text-transform:uppercase}.method h2{margin:10px 0 18px;font:600 25px/1.1 Fraunces,serif}.method p{margin:0;padding:9px 0;border-top:1px solid #d6d4ca;color:#536159;font:12px/1.4 Inter,sans-serif}.method b{color:#bf4c35;font:10px JetBrains Mono,monospace;margin-right:13px}.foot{position:absolute;left:66px;right:66px;bottom:48px;display:flex;justify-content:space-between;color:#536159}
 </style>
 </head>
 <body>
-  <div class="glow"></div>
-  <div class="eyebrow">Giordano Alvari · Senior AI Engineer</div>
-  <h1>I design, build and evaluate machine-learning systems.</h1>
-  <p>LLM systems · forecasting · applied machine learning</p>
-  <div class="foot">
-    <span>gioalvari.github.io</span><span class="dot"></span>
-    <span>Florence, Italy</span>
-  </div>
+<div class="top"><span class="name">Giordano Alvari</span><span class="edition">Field notes / 2026</span></div>
+<div class="hero">
+  <div class="copy"><div class="folio">Applied machine-learning systems</div><h1>Build the system.<br><em>Document the evidence.</em></h1></div>
+  <div class="method"><span class="tab">Working method</span><small>Iterative, not linear</small><h2>From question to evidence</h2><p><b>01</b>Frame the decision</p><p><b>02</b>Build the system</p><p><b>03</b>Evaluate behavior</p><p><b>04</b>Document limits</p></div>
+</div>
+<div class="foot"><span>Florence, Italy</span><span>gioalvari.github.io · Page 01</span></div>
 </body>
 </html>
