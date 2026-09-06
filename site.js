@@ -53,20 +53,11 @@ if (!reduceMotion && finePointer.matches) {
     hero.style.setProperty("--hero-y", `${event.clientY - bounds.top}px`);
   });
 
-  document.querySelectorAll(".method-card, .experiment-sheet").forEach((sheet) => {
+  document.querySelectorAll(".resume-card, .experiment-sheet").forEach((sheet) => {
     sheet.addEventListener("pointermove", (event) => {
       const bounds = sheet.getBoundingClientRect();
       sheet.style.setProperty("--sheet-x", `${event.clientX - bounds.left}px`);
       sheet.style.setProperty("--sheet-y", `${event.clientY - bounds.top}px`);
-      if (!sheet.classList.contains("method-card")) return;
-      const horizontal = (event.clientX - bounds.left) / bounds.width - 0.5;
-      const vertical = (event.clientY - bounds.top) / bounds.height - 0.5;
-      sheet.style.setProperty("--card-rotate-x", `${vertical * -2.2}deg`);
-      sheet.style.setProperty("--card-rotate-y", `${horizontal * 2.2}deg`);
-    });
-    sheet.addEventListener("pointerleave", () => {
-      sheet.style.removeProperty("--card-rotate-x");
-      sheet.style.removeProperty("--card-rotate-y");
     });
   });
 }

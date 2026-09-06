@@ -100,7 +100,7 @@ a:hover { color: var(--accent); }
 }
 
 .wordmark { color: var(--ink); text-decoration: none; display: flex; align-items: baseline; gap: .8rem; }
-.wordmark-name { font: 600 1.05rem/1 var(--serif); }
+.wordmark-name { font: 600 1.2rem/1 var(--serif); }
 .wordmark-edition { color: var(--ink-soft); font: .61rem/1 var(--mono); text-transform: uppercase; letter-spacing: .08em; }
 .site-header ul { list-style: none; display: flex; gap: clamp(.8rem, 3vw, 2rem); margin: 0; padding: 0; }
 .site-header li { display: flex; align-items: center; }
@@ -156,12 +156,13 @@ a:hover { color: var(--accent); }
 }
 .folio span { color: var(--rule); padding-inline: .35rem; }
 .hero h1 {
-  max-width: 13ch;
+  max-width: 15ch;
   margin: 1.4rem 0 1.8rem;
-  font: 600 clamp(3rem, 6.7vw, 5.65rem)/.98 var(--serif);
+  font: 600 clamp(3rem, 6.4vw, 5.45rem)/.98 var(--serif);
   letter-spacing: -.045em;
   text-wrap: balance;
 }
+.hero-name { color: var(--ink); }
 .hero h1 em {
   color: transparent;
   font-weight: 400;
@@ -174,7 +175,7 @@ a:hover { color: var(--accent); }
 .hero-links a { font: .69rem/1.4 var(--mono); text-transform: uppercase; letter-spacing: .04em; }
 .margin-note { max-width: 31rem; margin: 3rem 0 0; padding: .55rem 0 .55rem 1rem; border-left: 2px solid var(--accent); color: var(--accent-dark); font: .77rem/1.65 var(--mono); transform: rotate(-.45deg); }
 
-.method-card {
+.resume-card {
   --sheet-x: 50%;
   --sheet-y: 50%;
   position: relative;
@@ -184,12 +185,9 @@ a:hover { color: var(--accent); }
   box-shadow:
     .6rem .6rem 0 color-mix(in srgb, var(--rule-soft) 65%, transparent),
     0 1.2rem 4rem color-mix(in srgb, var(--accent) 8%, transparent);
-  transition: transform .2s ease-out, border-color .2s ease;
+  transition: border-color .2s ease, box-shadow .2s ease;
 }
-.has-motion .method-card {
-  transform: perspective(900px) rotateX(var(--card-rotate-x, 0deg)) rotateY(var(--card-rotate-y, 0deg));
-}
-.method-card::before, .experiment-sheet::before {
+.resume-card::before, .experiment-sheet::before {
   content: "";
   position: absolute;
   inset: 0;
@@ -199,9 +197,14 @@ a:hover { color: var(--accent); }
   background: radial-gradient(24rem circle at var(--sheet-x) var(--sheet-y), color-mix(in srgb, var(--teal) 8%, transparent), transparent 62%);
   transition: opacity .25s ease;
 }
-.method-card:hover::before, .experiment-sheet:hover::before { opacity: 1; }
-.method-card:hover { border-color: var(--accent); }
-.method-card > *, .experiment-sheet > * { position: relative; z-index: 1; }
+.resume-card:hover::before, .experiment-sheet:hover::before { opacity: 1; }
+.resume-card:hover {
+  border-color: var(--accent);
+  box-shadow:
+    .6rem .6rem 0 color-mix(in srgb, var(--accent) 16%, transparent),
+    0 1.4rem 4.5rem color-mix(in srgb, var(--accent) 12%, transparent);
+}
+.resume-card > *, .experiment-sheet > * { position: relative; z-index: 1; }
 .case-tab, .sheet-tab {
   position: absolute;
   right: -.55rem;
@@ -214,14 +217,15 @@ a:hover { color: var(--accent); }
   text-transform: uppercase;
   transform: rotate(1.5deg);
 }
-.method-heading { padding-bottom: 1.25rem; border-bottom: 1px solid var(--rule-soft); }
-.method-heading h2 { margin: .45rem 0 0; font: 600 1.7rem/1.15 var(--serif); }
-.method-card ol { list-style: none; margin: 0; padding: 0; }
-.method-card li { display: grid; grid-template-columns: 2.2rem 1fr; gap: 1rem; padding: 1rem 0; border-bottom: 1px solid var(--rule-soft); }
-.method-card li > span { padding-top: .25rem; color: var(--accent); font: .63rem/1 var(--mono); }
-.method-card strong { display: block; font: 600 1rem/1.2 var(--serif); }
-.method-card small { display: block; margin-top: .25rem; color: var(--ink-soft); font-size: .76rem; line-height: 1.5; }
-.method-loop { margin: 1.2rem 0 0; color: var(--ink-soft); font: .62rem/1.5 var(--mono); text-transform: uppercase; letter-spacing: .05em; }
+.resume-heading { padding-bottom: 1.25rem; border-bottom: 1px solid var(--rule-soft); }
+.resume-heading h2 { margin: .45rem 0 .35rem; font: 600 1.75rem/1.12 var(--serif); }
+.resume-heading > p:last-child { margin: 0; color: var(--ink-soft); font-size: .8rem; }
+.resume-card dl { margin: 0; }
+.resume-card dl div { display: grid; grid-template-columns: 6rem 1fr; gap: 1rem; padding: .9rem 0; border-bottom: 1px solid var(--rule-soft); }
+.resume-card dt { color: var(--accent); font: .61rem/1.5 var(--mono); text-transform: uppercase; }
+.resume-card dd { margin: 0; color: var(--ink-soft); font-size: .77rem; line-height: 1.5; }
+.resume-download { display: flex; justify-content: space-between; margin-top: 1.25rem; color: var(--ink); font: .69rem/1.5 var(--mono); text-decoration: none; text-transform: uppercase; letter-spacing: .04em; }
+.resume-download:hover { color: var(--accent); }
 .hero-footer { grid-column: 1 / -1; display: flex; justify-content: space-between; padding-top: 1.4rem; border-top: 1px solid var(--rule-soft); color: var(--ink-soft); font: .58rem/1 var(--mono); text-transform: uppercase; letter-spacing: .08em; }
 
 .chapter {
@@ -359,7 +363,7 @@ a:hover { color: var(--accent); }
 
 @media (max-width: 54rem) {
   .hero { grid-template-columns: 1fr; min-height: auto; }
-  .method-card { max-width: 38rem; }
+  .resume-card { max-width: 38rem; }
   .chapter-header { grid-template-columns: 3rem 1fr; }
   .chapter-header > p { grid-column: 2; }
   .work-entry { grid-template-columns: 5rem 1fr; }
@@ -399,7 +403,7 @@ a:hover { color: var(--accent); }
   body { font-size: 11pt; background: #fff; }
   .site-header, .reading-progress, .skip, .site-footer { display: none; }
   .hero { min-height: auto; display: block; }
-  .method-card { margin-top: 2rem; box-shadow: none; }
+  .resume-card { margin-top: 2rem; box-shadow: none; }
   .chapter { padding-block: 1.5rem; }
   .experiment-sheet, .project-small, .work-entry { break-inside: avoid; }
   .contact-sheet { color: #000; background: #fff; border-top: 1px solid #888; }
@@ -420,5 +424,5 @@ a:hover { color: var(--accent); }
   html { scroll-behavior: auto; }
   *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; animation: none !important; }
   .has-motion .reveal { opacity: 1; transform: none; }
-  .method-card, .experiment-sheet, .work-entry { transform: none !important; }
+  .resume-card, .experiment-sheet, .work-entry { transform: none !important; }
 }
