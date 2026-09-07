@@ -7,8 +7,8 @@ document.getElementById("year").textContent = new Date().getFullYear();
 if (!reduceMotion && typeof window.IntersectionObserver === "function") {
   const revealTargets = document.querySelectorAll(
     ".chapter-header, .practice-card, .work-entry, .experiment-sheet, " +
-      ".project-small, .project-index, .story-note, .story-copy > p, " +
-      ".contact-layout > *"
+      ".project-small, .all-projects-link, .story-note, .story-copy > p, " +
+      ".credentials-grid > section, .contact-layout > *"
   );
 
   revealTargets.forEach((target, index) => {

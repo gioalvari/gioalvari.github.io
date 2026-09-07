@@ -6,6 +6,7 @@ Personal site. No framework and no build step.
 - `style.css`
 - `site.js`
 - `assets/projects/*.svg`
+- `cv/index.html` — source for the one-page PDF resume
 - `_og.html` — 1200×630 source for the social preview
 - `og-2026-09.png` — versioned social-preview image used by metadata
 
@@ -32,3 +33,17 @@ npx playwright screenshot \
 ```
 
 Update both `og:image` and `twitter:image` in `index.html` when the filename changes.
+
+## Resume PDF
+
+Generate the published one-page resume from `cv/index.html` with Chromium:
+
+```bash
+python3 -m http.server 8000
+npx playwright pdf \
+  --format=A4 \
+  http://127.0.0.1:8000/cv/ \
+  giordano-alvari-cv.pdf
+```
+
+The public CV intentionally excludes phone numbers and employer-sensitive operational metrics.
