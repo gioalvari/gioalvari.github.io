@@ -54,7 +54,7 @@ footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--rule-s
 <a class="back" href="/">← Giordano Alvari</a>
 <article>
 <h1>My benchmark found four bugs in my inference server</h1>
-<p class="meta">September 2026 · RadixForge, llama.cpp, local LLM serving</p>
+<p class="meta">September 2026, updated with sticky memory and continuous batching · RadixForge, llama.cpp, local LLM serving</p>
 
 <p class="lede">When eight agents share the same long system prompt, a local inference server
 should compute that prompt once. <a href="https://github.com/gioalvari/radixforge">RadixForge</a>,
@@ -178,6 +178,58 @@ concurrency 8). The larger cost is the memory block itself: it changes on every 
 is always recomputed. By the fourth turn a request prefills 231 tokens instead of 54. Making that
 block stable across turns is the next thing to work on.</p>
 
+<h2>Update: both open items</h2>
+<p>I have since worked on the two open items above. These runs used the same model and machine,
+but on battery power, so compare the columns with each other, not with the tables above. Each
+comparison ran in rotated order.</p>
+
+<p><strong>A memory block that stays cached.</strong> Clients resend the history without the
+blocks the proxy added in earlier turns, so the prompt changed at every turn. The proxy's new
+<code>--inject-mode sticky</code> remembers the block it added to each user message and puts it
+back byte for byte. It also skips memories already shown and writes absolute dates instead of
+"5m ago". Each prompt is now an exact extension of the previous one. By the fourth turn a
+request prefills 150 tokens, against 307 with the block in the last user turn and 362 with the
+block in the system prompt.</p>
+<div class="table">
+<table>
+<caption>Follow-up turns, RadixForge backend, 544 requests, 0 failures.</caption>
+<thead><tr><th>Concurrency</th><th>Metric</th><th>System prompt</th><th>Last user turn</th><th>Sticky</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>TTFT p50</td><td>67.5 ms</td><td>62.7 ms</td><td><strong>47.9 ms</strong></td></tr>
+<tr><td>8</td><td>TTFT p50</td><td>288.1 ms</td><td><strong>249.0 ms</strong></td><td>256.5 ms</td></tr>
+<tr><td>8</td><td>TTFT p95</td><td>509.4 ms</td><td>435.7 ms</td><td><strong>287.2 ms</strong></td></tr>
+<tr><td>8</td><td>Full response p50</td><td>1,008 ms</td><td>945 ms</td><td><strong>858 ms</strong></td></tr>
+</tbody>
+</table>
+</div>
+<p>The new block still costs about 95 tokens per turn compared with no memory at all.</p>
+
+<p><strong>Continuous batching.</strong> RadixForge now runs one <code>llama_decode</code> per
+step. Each step carries the next token of every active sequence and the prompt tokens of any
+request that just arrived. New requests join the running batch, and finished or disconnected
+ones leave it at once. The synchronized 8-agent workload above does not change (2.96 s against
+2.97 s). The difference shows when requests arrive while others are generating: 64 requests,
+one every 60 ms, three rounds.</p>
+<div class="table">
+<table>
+<caption>Open-loop arrivals, 600-word shared system prompt, 16–96 output tokens.</caption>
+<thead><tr><th>Metric</th><th></th><th>Static batching</th><th>Continuous batching</th><th>llama-server, cache</th></tr></thead>
+<tbody>
+<tr><td>Successful</td><td></td><td>184/192</td><td><strong>192/192</strong></td><td>192/192</td></tr>
+<tr><td>TTFT p50</td><td></td><td>783 ms</td><td><strong>50 ms</strong></td><td>1,370 ms</td></tr>
+<tr><td>TTFT p95</td><td></td><td>1,907 ms</td><td><strong>278 ms</strong></td><td>1,642 ms</td></tr>
+<tr><td>Full response p50</td><td></td><td>2,179 ms</td><td><strong>1,375 ms</strong></td><td>2,193 ms</td></tr>
+<tr><td>Full response p95</td><td></td><td>4,050 ms</td><td>3,466 ms</td><td><strong>3,314 ms</strong></td></tr>
+</tbody>
+</table>
+</div>
+<p>The benchmark caught one more problem here. My first version was 6% slower on the
+synchronized workload, because the eight requests of a turn arrived a few milliseconds apart
+and each got its own prefill call. Putting prefill and decode in the same step, plus a 2 ms
+window to collect requests that arrive together, fixed it. The eight failures in the static
+column are the old server running out of sequence slots. Those requests now wait in the queue
+instead.</p>
+
 <h2>What I take from this</h2>
 <ul>
   <li>A benchmark for a cache has to check that the answer is real. A failure is always
@@ -185,13 +237,16 @@ block stable across turns is the next thing to work on.</p>
   <li>Measure against the strongest baseline configuration. llama-server with its cache is
       excellent for single-agent and per-agent reuse; the gap only exists for concurrent
       shared prefixes.</li>
-  <li>Report where you are slower. Here: generation, and every result on one small model on one
-      machine.</li>
+  <li>Report where you are slower. Here: tail latency of full responses, and every result on one
+      small model on one machine.</li>
 </ul>
 
 <p>Everything is reproducible:</p>
 <pre><code>uv run llmb prefix-sharing configs/experiments/prefix-sharing-qwen-0.5b.yaml
-uv run llmb prefix-sharing configs/experiments/memory-injection-qwen-0.5b.yaml</code></pre>
+uv run llmb prefix-sharing configs/experiments/memory-injection-qwen-0.5b.yaml
+# in radixforge/
+python3 scripts/ab_open_loop.py --model &lt;model.gguf&gt; --corpus &lt;text.txt&gt; \
+  --target static=&lt;old build&gt; --target continuous=build/radixforge --llama-server</code></pre>
 <p>Code and full results:
 <a href="https://github.com/gioalvari/radixforge">RadixForge</a> ·
 <a href="https://github.com/gioalvari/agent-memory-layer">agent-memory-layer</a> ·
