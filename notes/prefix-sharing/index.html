@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>My benchmark found four bugs in my inference server — Giordano Alvari</title>
+<meta name="description" content="Benchmarking RadixForge, a radix-tree KV-cache server on llama.cpp, against llama-server on a multi-agent workload: the bugs the benchmark found, the results, and where a memory proxy costs prefill.">
+<meta property="og:title" content="My benchmark found four bugs in my inference server">
+<meta property="og:description" content="8 agents sharing a system prompt: 288 ms vs 1,857 ms time to first token, and what it took to get an honest number.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://gioalvari.github.io/notes/prefix-sharing/">
+<link rel="canonical" href="https://gioalvari.github.io/notes/prefix-sharing/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E◆%3C/text%3E%3C/svg%3E">
+<style>
+:root {
+  --paper: #f5f7fb; --paper-raised: #fff; --ink: #172033; --ink-soft: #56647a;
+  --rule-soft: #dbe2ec; --accent: #1d5fd1;
+  --serif: "Fraunces", Georgia, serif; --sans: "Inter", system-ui, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --paper: #090d14; --paper-raised: #101722; --ink: #e7edf7; --ink-soft: #95a3b8;
+          --rule-soft: #202d3e; --accent: #63a4ff; }
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 17px/1.65 var(--sans); }
+main { max-width: 42rem; margin: 0 auto; padding: 3rem 1.25rem 5rem; }
+a { color: var(--accent); }
+.back { font-size: .9rem; text-decoration: none; }
+h1 { font: 600 2.3rem/1.15 var(--serif); margin: 1.5rem 0 .5rem; letter-spacing: -.01em; }
+h2 { font: 600 1.4rem/1.3 var(--serif); margin: 2.6rem 0 .6rem; }
+.meta { color: var(--ink-soft); font-size: .9rem; margin: 0 0 2rem; }
+.lede { font-size: 1.15rem; }
+code { font: .88em var(--mono); background: var(--paper-raised); border: 1px solid var(--rule-soft);
+       border-radius: 4px; padding: .05em .3em; }
+pre { font: .85rem/1.5 var(--mono); background: var(--paper-raised); border: 1px solid var(--rule-soft);
+      border-radius: 6px; padding: .9rem 1rem; overflow-x: auto; }
+pre code { border: 0; padding: 0; background: none; }
+.table { overflow-x: auto; margin: 1rem 0 1.4rem; }
+table { border-collapse: collapse; width: 100%; font-size: .92rem; }
+th, td { padding: .45rem .6rem; border-bottom: 1px solid var(--rule-soft); text-align: right; }
+th:first-child, td:first-child, th:nth-child(2), td:nth-child(2) { text-align: left; }
+th { font-weight: 600; }
+caption { caption-side: bottom; color: var(--ink-soft); font-size: .85rem; text-align: left; padding-top: .4rem; }
+li { margin: .35rem 0; }
+footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--rule-soft); color: var(--ink-soft); font-size: .9rem; }
+</style>
+</head>
+<body>
+<main>
+<a class="back" href="/">← Giordano Alvari</a>
+<article>
+<h1>My benchmark found four bugs in my inference server</h1>
+<p class="meta">September 2026 · RadixForge, llama.cpp, local LLM serving</p>
+
+<p class="lede">When eight agents share the same long system prompt, a local inference server
+should compute that prompt once. <a href="https://github.com/gioalvari/radixforge">RadixForge</a>,
+a small C++ server I built on llama.cpp, does exactly that. The first time I benchmarked it
+properly, it looked 130× faster than llama-server. It was not: it was broken. This is how the
+benchmark caught that, and what the real numbers are.</p>
+
+<h2>The idea</h2>
+<p>RadixForge keeps a radix tree of token sequences on the CPU. Each node points to llama.cpp
+sequence slots that already hold the KV cache for that prefix. A new request walks the tree,
+finds the longest cached prefix, attaches it to a fresh sequence with
+<code>llama_memory_seq_cp</code>, and only prefills the remaining tokens. It is the same idea
+as SGLang's RadixAttention, in about 2,400 lines of C++ on top of the public llama.cpp API, running
+on Apple Silicon with Metal.</p>
+
+<p>llama-server already has a prompt cache, so the question is where a shared tree actually
+helps. llama-server's cache is per slot: a request reuses what <em>its</em> slot computed
+before. When many agents arrive at the same time and land on different slots, each slot
+recomputes the shared prompt.</p>
+
+<h2>The benchmark</h2>
+<p>I added a <code>prefix-sharing</code> experiment to
+<a href="https://github.com/gioalvari/local-llm-bench">local-llm-bench</a>, my harness for
+reproducible local-inference measurements. It is server-agnostic: any OpenAI-compatible
+command line is a target. The workload:</p>
+<ul>
+  <li>8 agents, each with the same ~1,500-token system prompt plus a short per-agent suffix;</li>
+  <li>4 turns per agent, where later turns carry the real previous answers;</li>
+  <li>concurrency 1 and 8, 32 output tokens, temperature 0;</li>
+  <li>3 repetitions, each on a freshly started server with an empty cache;</li>
+  <li>time to first token (TTFT) split by phase: the first request, the other agents' first
+      turn ("fan-out"), and follow-up turns.</li>
+</ul>
+<p>Model: Qwen2.5-0.5B-Instruct Q4_K_M on an M4 Pro. Small on purpose, so that runs are fast and
+the orchestration overhead is visible.</p>
+
+<h2>Four bugs, found by one table</h2>
+<p><strong>1. The server never finished a streamed response.</strong> The very first run hung.
+The log had grown to 25 million lines in ten minutes. cpp-httplib calls a chunked content
+provider again and again until it calls <code>sink.done()</code>; mine returned without
+calling it, so every call re-enqueued the same, already moved-from request. Each empty request
+took a new sequence slot, and all 32 were gone within a second.</p>
+
+<p><strong>2. Slots leaked and could not be evicted.</strong> When slot allocation failed, the
+tree node's reference count had already been incremented and was never released. Eviction also
+only considered leaf nodes, but after a split the cached sequences stay on the parent, so the
+nodes that actually held memory could never be evicted.</p>
+
+<p><strong>3. The impossible result.</strong> With the first two fixed, the table showed
+RadixForge at 2 ms TTFT on follow-up turns: 134× faster than llama-server. The responses were
+empty. By default llama.cpp splits the context into one stream per sequence: 32,768 tokens
+across 32 sequences is 1,024 tokens each, and a 1,550-token prompt did not fit. The prefill
+failed, the error was streamed as content, and the harness measured a very fast failure.
+RadixForge now creates a unified KV cache: every sequence can use the whole context, and
+attaching a cached prefix only tags existing cells instead of copying them. The harness now
+counts empty completions and in-band errors as failures.</p>
+
+<p><strong>4. A race inside one batch.</strong> At concurrency 8, a third of requests failed.
+The worker prepared all queued requests before prefilling any of them, so agent B would reuse
+the prefix agent A had registered a moment earlier, but whose KV cache was still empty. llama.cpp
+rejected the batch because the sequence positions did not line up. Sequences are now
+<em>pending</em> until their prefill succeeds and are never used as a copy source before that.
+Requests that share a pending prefix are prefilled in a second round and then generate in the
+same batch.</p>
+
+<p>None of these showed up in unit tests or in manual curl calls with short prompts. They all
+needed long shared prompts, concurrency and multi-turn history, which is exactly the workload
+the server exists for.</p>
+
+<h2>The real numbers</h2>
+<div class="table">
+<table>
+<caption>Median TTFT, 576 requests, 0 failures. Qwen2.5-0.5B Q4_K_M, M4 Pro.</caption>
+<thead><tr><th>Concurrency</th><th>Phase</th><th>llama-server, no cache</th><th>llama-server, cache</th><th>RadixForge</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>fan-out</td><td>244 ms</td><td>27 ms</td><td><strong>17 ms</strong></td></tr>
+<tr><td>1</td><td>follow-up</td><td>276 ms</td><td>58 ms</td><td><strong>21 ms</strong></td></tr>
+<tr><td>8</td><td>fan-out</td><td>1,608 ms</td><td>1,857 ms</td><td><strong>288 ms</strong></td></tr>
+<tr><td>8</td><td>follow-up</td><td>2,157 ms</td><td>112 ms</td><td><strong>108 ms</strong></td></tr>
+</tbody>
+</table>
+</div>
+<ul>
+  <li><strong>Concurrent fan-out is where the tree matters.</strong> With 8 agents arriving
+      together, llama-server's cache reuses nothing (<code>cache_n</code> is 0) and is no faster
+      than having no cache at all. RadixForge computes the prefix once: 288 ms instead of
+      1,857 ms, 6.4× lower.</li>
+  <li><strong>Follow-up turns at concurrency 8 are a tie.</strong> Each agent's history lives in
+      its own llama-server slot, which is the case a per-slot cache already handles well.</li>
+  <li><strong>Generation is slower.</strong> RadixForge has no continuous batching yet. At
+      concurrency 8 the median full response on follow-up turns takes 696 ms against 525 ms.
+      Over the whole workload it still finishes in 2.98 s against 4.08 s (10.7 vs 7.8
+      requests/s), because the fan-out saving is larger.</li>
+</ul>
+
+<h2>Adding memory to the agents</h2>
+<p>I also maintain <a href="https://github.com/gioalvari/agent-memory-layer">agent-memory-layer</a>,
+a proxy that retrieves relevant past interactions with local embeddings and injects them into
+each request. My assumption was that injecting memories into the system prompt changes the
+prefix on every request and defeats the cache, so I added an option to put them at the start of
+the last user message instead, leaving the system prompt and history byte-identical.</p>
+
+<p>Putting the proxy in front of RadixForge first exposed another bug, in the proxy this time: its
+embedding context was configured for one sequence while it packed up to eight into a batch. Under
+concurrency, retrieval silently returned nothing, and some requests hung for minutes. After the
+fix:</p>
+<div class="table">
+<table>
+<caption>Median TTFT on follow-up turns, RadixForge backend, 1,440 requests, 0 failures.</caption>
+<thead><tr><th>Concurrency</th><th></th><th>No proxy</th><th>Memories in system prompt</th><th>Memories in last user turn</th></tr></thead>
+<tbody>
+<tr><td>1</td><td></td><td>21.6 ms</td><td>65.5 ms</td><td><strong>59.6 ms</strong></td></tr>
+<tr><td>8</td><td></td><td>110.2 ms</td><td>317.4 ms</td><td><strong>227.5 ms</strong></td></tr>
+</tbody>
+</table>
+</div>
+<p>My assumption was only partly right. The proxy appends memories to the <em>end</em> of the
+system prompt, so the 1,500 shared tokens before them were cached either way. Moving the block
+saves the conversation history (22–25% fewer prefilled tokens on later turns, 28% lower TTFT at
+concurrency 8). The larger cost is the memory block itself: it changes on every request, so it
+is always recomputed. By the fourth turn a request prefills 231 tokens instead of 54. Making that
+block stable across turns is the next thing to work on.</p>
+
+<h2>What I take from this</h2>
+<ul>
+  <li>A benchmark for a cache has to check that the answer is real. A failure is always
+      fast.</li>
+  <li>Measure against the strongest baseline configuration. llama-server with its cache is
+      excellent for single-agent and per-agent reuse; the gap only exists for concurrent
+      shared prefixes.</li>
+  <li>Report where you are slower. Here: generation, and every result on one small model on one
+      machine.</li>
+</ul>
+
+<p>Everything is reproducible:</p>
+<pre><code>uv run llmb prefix-sharing configs/experiments/prefix-sharing-qwen-0.5b.yaml
+uv run llmb prefix-sharing configs/experiments/memory-injection-qwen-0.5b.yaml</code></pre>
+<p>Code and full results:
+<a href="https://github.com/gioalvari/radixforge">RadixForge</a> ·
+<a href="https://github.com/gioalvari/agent-memory-layer">agent-memory-layer</a> ·
+<a href="https://github.com/gioalvari/local-llm-bench">local-llm-bench</a>.</p>
+</article>
+<footer>Giordano Alvari · Senior AI / ML Engineer, Florence · <a href="/">gioalvari.github.io</a></footer>
+</main>
+</body>
+</html>
