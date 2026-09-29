@@ -6,7 +6,7 @@
 <title>Retrieved is not readable: calibrating an agent memory proxy — Giordano Alvari</title>
 <meta name="description" content="Conformal prediction picks how many memories an agent memory proxy should inject. Doing it honestly on LongMemEval-S exposed a decay bug, a shipped constant that was not a quantile, a 5x token error and a guarantee about the wrong thing.">
 <meta property="og:title" content="Retrieved is not readable: calibrating an agent memory proxy">
-<meta property="og:description" content="Conformal k for memory retrieval on 467 LongMemEval-S questions, and why 90% evidence coverage meant the model could read the answer 57% of the time.">
+<meta property="og:description" content="Conformal k for memory retrieval on 467 LongMemEval-S questions, and why a line-length default moved correct answers from 40% to 54%.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://gioalvari.github.io/notes/conformal-memory/">
 <link rel="canonical" href="https://gioalvari.github.io/notes/conformal-memory/">
@@ -160,14 +160,42 @@ truncation.</p>
 <p>The calibrated 90% setting, eight memories of 200 bytes, shows the answer in 57% of these
 questions. For the same ~800 tokens, two memories of 1,600 bytes show it in 72%. Four memories
 of 800 bytes beat sixteen of 200 bytes with a third fewer tokens. Once retrieval is decent, line
-length matters more than depth. The line length is now a flag, <code>--memory-line-chars</code>.
-The default stays at 200 until I have measured end-to-end answers rather than substring matches.
-This probe only counts verbatim answers, so it underestimates the problem.</p>
+length matters more than depth. This probe only counts whether the answer string survives, so I
+also checked what a model does with it.</p>
+
+<h2>Asking a model</h2>
+<p>I asked Qwen2.5-7B-Instruct (Q4_K_M, local llama-server, greedy decoding) the same 214
+questions, with memories formatted exactly as the proxy injects them. A reply counts as correct
+when the gold answer appears in it as whole words, with no LLM judge. Differences are paired
+bootstrap intervals over the same questions.</p>
+<div class="table">
+<table>
+<caption>214 questions, Qwen2.5-7B-Instruct, greedy decoding.</caption>
+<thead><tr><th>Injected memories</th><th></th><th>Correct</th><th>Prompt tokens</th></tr></thead>
+<tbody>
+<tr><td>5 × 200 bytes (old default)</td><td></td><td>40.2%</td><td>548</td></tr>
+<tr><td>8 × 200 bytes</td><td></td><td>41.1%</td><td>808</td></tr>
+<tr><td>16 × 200 bytes</td><td></td><td>40.2%</td><td>1,498</td></tr>
+<tr><td>2 × 1,600 bytes</td><td></td><td>50.9%</td><td>802</td></tr>
+<tr><td><strong>5 × 400 bytes (new default)</strong></td><td></td><td><strong>53.7%</strong></td><td>821</td></tr>
+<tr><td>8 × 400 bytes</td><td></td><td>55.1%</td><td>1,236</td></tr>
+<tr><td>8 × 800 bytes</td><td></td><td>59.8%</td><td>1,890</td></tr>
+<tr><td>Labeled evidence only × 1,600 bytes</td><td></td><td>66.4%</td><td>796</td></tr>
+</tbody>
+</table>
+</div>
+<p>At 200 bytes, more memories do nothing: 5, 8 and 16 lines all score about 40%. Doubling the
+line length gains 13.6 points with five memories (95% interval 7.9 to 19.2) for about 270 more
+prompt tokens. Retrieval is still the ceiling: injecting only the labeled evidence scores 66.4%
+at the same cost as eight short lines. The proxy default is now 400 bytes, the longest at which
+the default five memories always fit the 2,048-token budget. It is still one model, one prompt,
+and questions with short verbatim answers.</p>
 
 <h2>What I take from this</h2>
 <ul>
   <li>A conformal guarantee is exactly as good as the event it is about. "Evidence was retrieved"
-      was easy to label and calibrate; "the model could read the answer" is what I cared about.</li>
+      was easy to label and calibrate; "the model could answer" is what I cared about, and a
+      one-line formatting default moved it by 13 points.</li>
   <li>Calibrate the thing you ship. An average of split quantiles is a good plot, not a shipped
       constant.</li>
   <li>Check every step between the guarantee and the model. A budget, a truncation or a context
@@ -181,7 +209,9 @@ This probe only counts verbatim answers, so it underestimates the problem.</p>
 SQLite; after that, the follow-up needs no server and runs in about ten seconds:</p>
 <pre><code># in agent-memory-layer/research/conformal
 uv run python -m conformal_retrieval.study
-PYTHONPATH=src uv run python -m conformal_retrieval.followup</code></pre>
+PYTHONPATH=src uv run python -m conformal_retrieval.followup
+# with llama-server on :8491 serving Qwen2.5-7B-Instruct
+PYTHONPATH=src uv run python -m conformal_retrieval.endtoend --model qwen2.5-7b</code></pre>
 <p>Code and full results:
 <a href="https://github.com/gioalvari/agent-memory-layer/blob/main/docs/conformal-retrieval.md">the study write-up</a> ·
 <a href="https://github.com/gioalvari/agent-memory-layer">agent-memory-layer</a>. The proxy's
