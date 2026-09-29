@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Retrieved is not readable: calibrating an agent memory proxy — Giordano Alvari</title>
+<meta name="description" content="Conformal prediction picks how many memories an agent memory proxy should inject. Doing it honestly on LongMemEval-S exposed a decay bug, a shipped constant that was not a quantile, a 5x token error and a guarantee about the wrong thing.">
+<meta property="og:title" content="Retrieved is not readable: calibrating an agent memory proxy">
+<meta property="og:description" content="Conformal k for memory retrieval on 467 LongMemEval-S questions, and why 90% evidence coverage meant the model could read the answer 57% of the time.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://gioalvari.github.io/notes/conformal-memory/">
+<link rel="canonical" href="https://gioalvari.github.io/notes/conformal-memory/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E◆%3C/text%3E%3C/svg%3E">
+<style>
+:root {
+  --paper: #f5f7fb; --paper-raised: #fff; --ink: #172033; --ink-soft: #56647a;
+  --rule-soft: #dbe2ec; --accent: #1d5fd1;
+  --serif: "Fraunces", Georgia, serif; --sans: "Inter", system-ui, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --paper: #090d14; --paper-raised: #101722; --ink: #e7edf7; --ink-soft: #95a3b8;
+          --rule-soft: #202d3e; --accent: #63a4ff; }
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 17px/1.65 var(--sans); }
+main { max-width: 42rem; margin: 0 auto; padding: 3rem 1.25rem 5rem; }
+a { color: var(--accent); }
+.back { font-size: .9rem; text-decoration: none; }
+h1 { font: 600 2.3rem/1.15 var(--serif); margin: 1.5rem 0 .5rem; letter-spacing: -.01em; }
+h2 { font: 600 1.4rem/1.3 var(--serif); margin: 2.6rem 0 .6rem; }
+.meta { color: var(--ink-soft); font-size: .9rem; margin: 0 0 2rem; }
+.lede { font-size: 1.15rem; }
+code { font: .88em var(--mono); background: var(--paper-raised); border: 1px solid var(--rule-soft);
+       border-radius: 4px; padding: .05em .3em; }
+pre { font: .85rem/1.5 var(--mono); background: var(--paper-raised); border: 1px solid var(--rule-soft);
+      border-radius: 6px; padding: .9rem 1rem; overflow-x: auto; }
+pre code { border: 0; padding: 0; background: none; }
+.table { overflow-x: auto; margin: 1rem 0 1.4rem; }
+table { border-collapse: collapse; width: 100%; font-size: .92rem; }
+th, td { padding: .45rem .6rem; border-bottom: 1px solid var(--rule-soft); text-align: right; }
+th:first-child, td:first-child, th:nth-child(2), td:nth-child(2) { text-align: left; }
+th { font-weight: 600; }
+caption { caption-side: bottom; color: var(--ink-soft); font-size: .85rem; text-align: left; padding-top: .4rem; }
+li { margin: .35rem 0; }
+footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--rule-soft); color: var(--ink-soft); font-size: .9rem; }
+</style>
+</head>
+<body>
+<main>
+<a class="back" href="/">← Giordano Alvari</a>
+<article>
+<h1>Retrieved is not readable: calibrating an agent memory proxy</h1>
+<p class="meta">September 2026 · agent-memory-layer, conformal prediction, LongMemEval</p>
+
+<p class="lede"><a href="https://github.com/gioalvari/agent-memory-layer">agent-memory-layer</a>
+is a proxy that stores an agent's past interactions and injects the most relevant ones into each
+new request. It has one knob that matters more than any other: how many memories to inject. I
+wanted that number to come with a guarantee instead of a guess, so I calibrated it with conformal
+prediction. The guarantee held. It just turned out to be about the wrong thing.</p>
+
+<h2>The setup</h2>
+<p>I used <a href="https://github.com/xiaowu0162/LongMemEval">LongMemEval-S</a> (cleaned, MIT):
+500 questions, each with its own haystack of about 245 past user–assistant pairs, and labels for
+which turns contain the evidence. 467 questions have labeled evidence; the rest are abstentions.
+Every pair is embedded with the proxy's model, nomic-embed-text, and scored exactly as the proxy
+scores it: the maximum cosine similarity of the query against the user and the assistant side.
+All numbers are averaged over 200 random 50:50 calibration/test splits with a fixed seed.</p>
+
+<h2>First, the ranking was wrong</h2>
+<p>The proxy multiplied similarity by a recency decay that falls to 0.5 after 30 days. On this
+benchmark, that cost ten points: an evidence memory was in the top 5 for 75.2% of questions,
+against 85.6% with raw similarity. The damage was concentrated on knowledge updates
+(65% → 96%). Those are questions where the user once said something, then corrected it, and the
+old turn is still relevant. Temporal-reasoning questions lost about one point. The proxy now ranks
+by similarity and uses recency only to break near-ties.</p>
+
+<h2>Conformal k</h2>
+<p>For each calibration question, take the rank of its best evidence memory. That rank is the
+nonconformity score: the number of memories you would have needed. The split-conformal
+quantile, the ⌈(1 − α)(n + 1)⌉-th smallest rank, gives a k such that a new, exchangeable question
+has evidence in its top k with probability at least 1 − α. On the test folds this held:
+82.6%, 90.8% and 95.4% observed coverage for 80, 90 and 95% targets.</p>
+
+<p>The obvious alternative, a threshold on the similarity score, is also valid but wasteful. Scores
+are not comparable across queries, so a threshold loose enough for hard queries injects dozens of
+memories into easy ones. At the same 90% target it injected 32% more text than a rank k with
+raw similarity, and 7× more with the old decayed score.</p>
+
+<p>Then I made a mistake. I shipped <code>--target-coverage 0.8 | 0.9 | 0.95</code> with
+k = 4 / 8 / 19: the rounded means of the k values over 200 splits. That describes how much k
+varies between splits, but it is not a conformal quantile of anything. The shipped constant should
+be one quantile over all 467 labeled questions, which gives 4 / 8 / <strong>16</strong>.</p>
+
+<h2>A guarantee the proxy could silently break</h2>
+<p>The guarantee assumes all k memories reach the model. The proxy also enforces a token budget
+for the memory block, and it drops the lowest-ranked memories that do not fit. My README warned
+that eight memories needed about 4,300 tokens, twice the default budget. That number was wrong
+too. The study counted the full text of each memory, but the proxy injects one line per memory
+with each side cut to 200 bytes. A line costs about 96 tokens, so eight memories cost 815, not
+4,300.</p>
+<p>The proxy now derives a worst-case bound for one line and, when a coverage target is set, sizes
+the budget to fit k lines. With 200-byte lines only the 95% target in legacy mode exceeds the
+default. An explicit budget is respected, but the proxy logs that it can break the target. When the
+context-size guard cuts k for a request, that is logged too.</p>
+
+<h2>Three alternatives to a fixed k</h2>
+<div class="table">
+<table>
+<caption>90% target, recency tie-break, mean over 200 splits (coverage 5–95% range).</caption>
+<thead><tr><th>Policy</th><th>Coverage</th><th>Evidence recall</th><th>Mean tokens</th><th>Max tokens</th></tr></thead>
+<tbody>
+<tr><td>Rank k</td><td>90.8% (86–95)</td><td>80.7%</td><td>836</td><td>905</td></tr>
+<tr><td>Token budget</td><td>90.1% (85–94)</td><td>79.1%</td><td>793</td><td>844</td></tr>
+<tr><td>Rank k per top-1 tercile</td><td>92.5% (88–96)</td><td>82.9%</td><td>1,211</td><td>2,609</td></tr>
+<tr><td>Risk control, 90% recall</td><td>95.4% (92–98)</td><td>90.5%</td><td>1,786</td><td>1,955</td></tr>
+</tbody>
+</table>
+</div>
+<ul>
+  <li><strong>Calibrate tokens instead of memories.</strong> Since the budget is what actually
+      constrains the proxy, I calibrated the tokens needed to reach the first evidence. It saves 5%.
+      Truncation makes every line almost the same length, so a token budget and a count are nearly
+      the same policy. It would matter with long, variable lines.</li>
+  <li><strong>Adapt k to the query.</strong> A marginal guarantee can hide very uneven coverage.
+      Split questions into terciles of their top-1 similarity, which the proxy knows before it
+      injects anything. The global 90% k covers the least confident third only 80% of the time,
+      and the most confident third 99.4% of the time. A separate quantile per tercile (Mondrian
+      conformal) gives 91, 92 and 94%, with about 24, 8 and 4 memories. That costs 45% more tokens,
+      moved from easy queries to hard ones. There are about 78 calibration questions per bin, so it
+      is not a proxy option yet.</li>
+  <li><strong>Control recall, not "at least one".</strong> Questions have 1.9 evidence turns on
+      average, and a 90% coverage target retrieves all of them only 60% of the time. Conformal
+      risk control bounds the expected fraction of missed evidence instead: k = 17 for 90% expected
+      recall. The 80%-recall k is 8, the same as the 90%-coverage k, so the two targets are two
+      readings of the same curve.</li>
+</ul>
+
+<h2>Retrieved is not readable</h2>
+<p>Every number so far counts a question as covered when a memory labeled as evidence is injected.
+But 99.7% of evidence assistant turns and 82% of evidence user turns are longer than 200 bytes,
+so the injected line is a prefix. I took the 214 questions whose short answer (up to 40
+characters) appears verbatim in an evidence turn and checked whether it is still there after
+truncation.</p>
+<div class="table">
+<table>
+<caption>Answer visible to the model / mean injected tokens, 214 questions.</caption>
+<thead><tr><th>Memories</th><th></th><th>200 bytes</th><th>400 bytes</th><th>800 bytes</th><th>1,600 bytes</th></tr></thead>
+<tbody>
+<tr><td>2</td><td></td><td>40% / 219</td><td>56% / 348</td><td>65% / 534</td><td><strong>72% / 816</strong></td></tr>
+<tr><td>4</td><td></td><td>49% / 419</td><td>68% / 670</td><td><strong>77% / 1,045</strong></td><td>85% / 1,610</td></tr>
+<tr><td>8</td><td></td><td>57% / 811</td><td>77% / 1,304</td><td>87% / 2,045</td><td>93% / 3,166</td></tr>
+<tr><td>16</td><td></td><td>65% / 1,583</td><td>85% / 2,542</td><td>92% / 3,993</td><td>96% / 6,175</td></tr>
+</tbody>
+</table>
+</div>
+<p>The calibrated 90% setting, eight memories of 200 bytes, shows the answer in 57% of these
+questions. For the same ~800 tokens, two memories of 1,600 bytes show it in 72%. Four memories
+of 800 bytes beat sixteen of 200 bytes with a third fewer tokens. Once retrieval is decent, line
+length matters more than depth. The line length is now a flag, <code>--memory-line-chars</code>.
+The default stays at 200 until I have measured end-to-end answers rather than substring matches.
+This probe only counts verbatim answers, so it underestimates the problem.</p>
+
+<h2>What I take from this</h2>
+<ul>
+  <li>A conformal guarantee is exactly as good as the event it is about. "Evidence was retrieved"
+      was easy to label and calibrate; "the model could read the answer" is what I cared about.</li>
+  <li>Calibrate the thing you ship. An average of split quantiles is a good plot, not a shipped
+      constant.</li>
+  <li>Check every step between the guarantee and the model. A budget, a truncation or a context
+      guard can undo it without an error.</li>
+  <li>The limits are real. Coverage is marginal and assumes deployment queries are exchangeable
+      with LongMemEval. The dataset's session dates are synthetic. The constants hold for one
+      embedding model.</li>
+</ul>
+
+<p>The first study embeds the dataset through a local llama-server and caches every vector in
+SQLite; after that, the follow-up needs no server and runs in about ten seconds:</p>
+<pre><code># in agent-memory-layer/research/conformal
+uv run python -m conformal_retrieval.study
+PYTHONPATH=src uv run python -m conformal_retrieval.followup</code></pre>
+<p>Code and full results:
+<a href="https://github.com/gioalvari/agent-memory-layer/blob/main/docs/conformal-retrieval.md">the study write-up</a> ·
+<a href="https://github.com/gioalvari/agent-memory-layer">agent-memory-layer</a>. The proxy's
+effect on prefill and caching is in the <a href="/notes/prefix-sharing/">prefix-sharing note</a>.</p>
+</article>
+<footer>Giordano Alvari · Senior AI / ML Engineer, Florence · <a href="/">gioalvari.github.io</a></footer>
+</main>
+</body>
+</html>
