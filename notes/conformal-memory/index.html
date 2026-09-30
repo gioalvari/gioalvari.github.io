@@ -130,8 +130,9 @@ context-size guard cuts k for a request, that is logged too.</p>
       injects anything. The global 90% k covers the least confident third only 80% of the time,
       and the most confident third 99.4% of the time. A separate quantile per tercile (Mondrian
       conformal) gives 91, 92 and 94%, with about 24, 8 and 4 memories. That costs 45% more tokens,
-      moved from easy queries to hard ones. There are about 78 calibration questions per bin, so it
-      is not a proxy option yet.</li>
+      moved from easy queries to hard ones. It is now an opt-in flag, <code>--adaptive-k</code>,
+      calibrated on all 467 questions (about 155 per tercile); below is why it is not the
+      default.</li>
   <li><strong>Control recall, not "at least one".</strong> Questions have 1.9 evidence turns on
       average, and a 90% coverage target retrieves all of them only 60% of the time. Conformal
       risk control bounds the expected fraction of missed evidence instead: k = 17 for 90% expected
@@ -164,32 +165,40 @@ length matters more than depth. This probe only counts whether the answer string
 also checked what a model does with it.</p>
 
 <h2>Asking a model</h2>
-<p>I asked Qwen2.5-7B-Instruct (Q4_K_M, local llama-server, greedy decoding) the same 214
-questions, with memories formatted exactly as the proxy injects them. A reply counts as correct
+<p>I asked two models, Qwen2.5-7B-Instruct and Llama-3.1-8B-Instruct (both Q4_K_M, local
+llama-server, greedy decoding), the same 214 questions, with memories formatted exactly as the proxy injects them. A reply counts as correct
 when the gold answer appears in it as whole words, with no LLM judge. Differences are paired
 bootstrap intervals over the same questions.</p>
 <div class="table">
 <table>
-<caption>214 questions, Qwen2.5-7B-Instruct, greedy decoding.</caption>
-<thead><tr><th>Injected memories</th><th></th><th>Correct</th><th>Prompt tokens</th></tr></thead>
+<caption>214 questions, greedy decoding, share of correct answers.</caption>
+<thead><tr><th>Injected memories</th><th></th><th>Qwen2.5-7B</th><th>Llama-3.1-8B</th></tr></thead>
 <tbody>
-<tr><td>5 × 200 bytes (old default)</td><td></td><td>40.2%</td><td>548</td></tr>
-<tr><td>8 × 200 bytes</td><td></td><td>41.1%</td><td>808</td></tr>
-<tr><td>16 × 200 bytes</td><td></td><td>40.2%</td><td>1,498</td></tr>
-<tr><td>2 × 1,600 bytes</td><td></td><td>50.9%</td><td>802</td></tr>
-<tr><td><strong>5 × 400 bytes (new default)</strong></td><td></td><td><strong>53.7%</strong></td><td>821</td></tr>
-<tr><td>8 × 400 bytes</td><td></td><td>55.1%</td><td>1,236</td></tr>
-<tr><td>8 × 800 bytes</td><td></td><td>59.8%</td><td>1,890</td></tr>
-<tr><td>Labeled evidence only × 1,600 bytes</td><td></td><td>66.4%</td><td>796</td></tr>
+<tr><td>5 × 200 bytes (old default)</td><td></td><td>40.2%</td><td>33.2%</td></tr>
+<tr><td>8 × 200 bytes</td><td></td><td>41.1%</td><td>35.5%</td></tr>
+<tr><td><strong>5 × 400 bytes (new default)</strong></td><td></td><td><strong>53.7%</strong></td><td><strong>50.5%</strong></td></tr>
+<tr><td>8 × 400 bytes</td><td></td><td>55.1%</td><td>53.3%</td></tr>
+<tr><td>Adaptive k at 90% × 400 bytes</td><td></td><td>55.6%</td><td>55.1%</td></tr>
+<tr><td>8 × 800 bytes</td><td></td><td>59.8%</td><td>62.6%</td></tr>
+<tr><td>Labeled evidence only × 1,600 bytes</td><td></td><td>66.4%</td><td>65.0%</td></tr>
 </tbody>
 </table>
 </div>
-<p>At 200 bytes, more memories do nothing: 5, 8 and 16 lines all score about 40%. Doubling the
-line length gains 13.6 points with five memories (95% interval 7.9 to 19.2) for about 270 more
-prompt tokens. Retrieval is still the ceiling: injecting only the labeled evidence scores 66.4%
-at the same cost as eight short lines. The proxy default is now 400 bytes, the longest at which
-the default five memories always fit the 2,048-token budget. It is still one model, one prompt,
-and questions with short verbatim answers.</p>
+<p>At 200 bytes, more memories do almost nothing: on Qwen, 5, 8 and 16 lines all score about
+40%. Doubling the line length gains 13.6 points with five memories on Qwen (95% interval 7.9 to
+19.2) and 17.3 on Llama (11.7 to 22.4), for about 270 more prompt tokens. Retrieval is still the
+ceiling: injecting only the labeled evidence scores 65–66% at the same cost as eight short lines.
+The proxy default is now 400 bytes, the longest at which the default five memories always fit
+the 2,048-token budget.</p>
+
+<p>The adaptive k is the humbling row. Overall it is within two points of a fixed eight
+memories on both models, with an interval that straddles zero, for about a quarter more prompt
+tokens. Split by tercile, it does what it was designed to do: on queries whose best match is weak
+it gains 4.5 points on Qwen and 12 on Llama. But on confident queries it drops from eight
+memories to four and loses 5–6 points. A 95% chance that <em>some</em> evidence is in the top
+four is not the same as the model having enough context to answer. The terciles hold only 63–84
+of these questions each, so this is directional. The flag stays opt-in. This is still two
+models, one prompt, and questions with short verbatim answers.</p>
 
 <h2>What I take from this</h2>
 <ul>
@@ -210,8 +219,10 @@ SQLite; after that, the follow-up needs no server and runs in about ten seconds:
 <pre><code># in agent-memory-layer/research/conformal
 uv run python -m conformal_retrieval.study
 PYTHONPATH=src uv run python -m conformal_retrieval.followup
-# with llama-server on :8491 serving Qwen2.5-7B-Instruct
-PYTHONPATH=src uv run python -m conformal_retrieval.endtoend --model qwen2.5-7b</code></pre>
+# with llama-server on :8491 serving the model under test
+PYTHONPATH=src uv run python -m conformal_retrieval.endtoend --model qwen2.5-7b
+PYTHONPATH=src uv run python -m conformal_retrieval.endtoend --model llama-3.1-8b \
+  --settings none,k5_b200,k8_b200,k5_b400,k8_b400,k8_b800,adaptive90_b400,oracle_b1600</code></pre>
 <p>Code and full results:
 <a href="https://github.com/gioalvari/agent-memory-layer/blob/main/docs/conformal-retrieval.md">the study write-up</a> ·
 <a href="https://github.com/gioalvari/agent-memory-layer">agent-memory-layer</a>. The proxy's
