@@ -179,6 +179,8 @@ bootstrap intervals over the same questions.</p>
 <tr><td><strong>5 × 400 bytes (new default)</strong></td><td></td><td><strong>53.7%</strong></td><td><strong>50.5%</strong></td></tr>
 <tr><td>8 × 400 bytes</td><td></td><td>55.1%</td><td>53.3%</td></tr>
 <tr><td>Adaptive k at 90% × 400 bytes</td><td></td><td>55.6%</td><td>55.1%</td></tr>
+<tr><td>Adaptive k, never below 8, × 400 bytes</td><td></td><td>56.5%</td><td>57.0%</td></tr>
+<tr><td>14 × 400 bytes</td><td></td><td>58.4%</td><td>58.4%</td></tr>
 <tr><td>8 × 800 bytes</td><td></td><td>59.8%</td><td>62.6%</td></tr>
 <tr><td>Labeled evidence only × 1,600 bytes</td><td></td><td>66.4%</td><td>65.0%</td></tr>
 </tbody>
@@ -197,14 +199,23 @@ tokens. Split by tercile, it does what it was designed to do: on queries whose b
 it gains 4.5 points on Qwen and 12 on Llama. But on confident queries it drops from eight
 memories to four and loses 5–6 points. A 95% chance that <em>some</em> evidence is in the top
 four is not the same as the model having enough context to answer. The terciles hold only 63–84
-of these questions each, so this is directional. The flag stays opt-in. This is still two
-models, one prompt, and questions with short verbatim answers.</p>
+of these questions each, so this is directional.</p>
+
+<p>The fix is a floor: never go below the global k of eight. Confident queries get their
+accuracy back, the weak tercile keeps its gain, and the set still contains both conformal sets, so
+both guarantees hold. Against a fixed eight it gains 1.4 points on Qwen and 3.7 on Llama (95%
+interval 0.9 to 7.0). It is still not the best use of the tokens: eight memories of 800 bytes cost
+about the same and score 3.3 and 5.6 points higher. The proxy's <code>--adaptive-k</code> now uses
+the floor and stays opt-in. This is still two models, one prompt, and questions with short verbatim
+answers.</p>
 
 <h2>What I take from this</h2>
 <ul>
   <li>A conformal guarantee is exactly as good as the event it is about. "Evidence was retrieved"
       was easy to label and calibrate; "the model could answer" is what I cared about, and a
       one-line formatting default moved it by 13 points.</li>
+  <li>Spend context on longer memories before more memories. Every way I tried of adding depth,
+      fixed or adaptive, lost to giving the same tokens to fewer, longer lines.</li>
   <li>Calibrate the thing you ship. An average of split quantiles is a good plot, not a shipped
       constant.</li>
   <li>Check every step between the guarantee and the model. A budget, a truncation or a context
@@ -222,7 +233,7 @@ PYTHONPATH=src uv run python -m conformal_retrieval.followup
 # with llama-server on :8491 serving the model under test
 PYTHONPATH=src uv run python -m conformal_retrieval.endtoend --model qwen2.5-7b
 PYTHONPATH=src uv run python -m conformal_retrieval.endtoend --model llama-3.1-8b \
-  --settings none,k5_b200,k8_b200,k5_b400,k8_b400,k8_b800,adaptive90_b400,oracle_b1600</code></pre>
+  --settings none,k5_b200,k8_b200,k5_b400,k8_b400,k14_b400,k8_b800,adaptive90_b400,adaptive90_floor8_b400,oracle_b1600</code></pre>
 <p>Code and full results:
 <a href="https://github.com/gioalvari/agent-memory-layer/blob/main/docs/conformal-retrieval.md">the study write-up</a> ·
 <a href="https://github.com/gioalvari/agent-memory-layer">agent-memory-layer</a>. The proxy's
